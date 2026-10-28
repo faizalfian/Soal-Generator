@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Solving Dekomposisi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261028-008</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">5 SOAL</span>
+                </div>
+                <h1 class="header-title">Paket 02: Latihan Analisis Masalah, Dekomposisi, & Eksplorasi Algoritma (Lanjutan)</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<div class="callout callout-warning"><div class="callout-title">📌 Aturan Emas Sebelum Menyentuh Keyboard ("10 Menit Tanpa Koding")</div></div>
+<p>Sama seperti Paket 01, paket ini melatih kemampuanmu <strong>menganalisis masalah dari nol</strong> tanpa bocoran sintaks:</p>
+<ol>
+<li><strong>Pahami cerita masalahnya</strong> dan uji dengan contoh kecil di kertas.</li>
+<li><strong>Jawab pertanyaan di Lembar Analisis</strong> untuk memecah masalah menjadi bagian-bagian kecil (<em>Dekomposisi</em>).</li>
+<li>Diskusikan dengan teman atau gurumu: <strong>"Mengapa caraku berbeda dengan caramu, dan mana yang lebih efisien?"</strong></li>
+</ol>
+<div class="card"><div class="card-header"><h2>Kasus 1: Pemisahan Antrean Pasien Lansia & Reguler</h2></div>
+<p><strong>Skenario Masalah:</strong></p>
+<p>Di sebuah klinik kesehatan, terdapat <span class="var-math">N</span> pasien yang mendaftar secara berurutan. Setiap pasien dicatat <strong>usianya</strong>. Klinik menerapkan aturan antrean prioritas:</p>
+<ol>
+<li>Seluruh pasien <strong>Lansia (usia <span class="math-badge">&ge; 60</span> tahun)</strong> harus dipanggil terlebih dahulu (sesuai urutan kedatangan mereka).</li>
+<li>Setelah semua pasien Lansia selesai, barulah pasien <strong>Reguler (usia <span class="math-badge">&lt; 60</span> tahun)</strong> dipanggil (juga sesuai urutan kedatangan mereka).</li>
+</ol>
+<p>Buatlah program yang menerima daftar usia <span class="var-math">N</span> pasien sesuai urutan datang, lalu menampilkan urutan usia pasien sesuai urutan pemanggilan klinik!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (jumlah pasien).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (usia pasien sesuai urutan datang).</li>
+<li>Output berupa barisan usia pasien yang sudah dikelompokkan (Lansia di depan, Reguler di belakang).</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">1 &le; usia[i] &le; 120</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+25 65 40 70 18 60</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">65 70 60 25 40 18</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+30 20 45 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">30 20 45 50</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+62 80 75 60</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">62 80 75 60</code></pre>
+<div class="decom-box"><h4>📝 Lembar Analisis & Dekomposisi (Isi Sebelum Ngoding!)</h4>
+<ol>
+<li><strong>Jangan Terburu-buru Pakai Sorting!</strong> Apakah soal ini meminta usia diurutkan dari yang paling tua ke paling muda? Perhatikan Test Case 1: mengapa <code>65 70 60</code> urutannya seperti itu (bukan <code>70 65 60</code>)?</li>
+<li><strong>Pecah Tahapan (Dekomposisi):</strong> Bagaimana cara paling sederhana untuk menyelesaikan tugas ini dalam <strong>2 tahap perjalanan</strong> dari awal sampai akhir daftar?</li>
+</ol>
+<ul>
+<li><em>Perjalanan 1:</em> ........................................................................</li>
+<li><em>Perjalanan 2:</em> ........................................................................</li>
+</ul>
+<ol>
+<li><strong>Eksplorasi Alternatif:</strong> Bagaimana jika klinik meminta hasilnya disimpan ke dalam sebuah array baru bernama <code>antreanPrioritas[]</code> sebelum dicetak?</li>
+</ol>
+</div> <!-- /.decom-box -->
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Kasus 2: Mencocokkan Dua Barang dengan Nominal Voucher Belanja</h2></div>
+<p><strong>Skenario Masalah:</strong></p>
+<p>Andi memenangkan voucher belanja senilai <code>V</code> rupiah. Syarat penggunaan voucher tersebut sangat unik: Andi harus membeli <strong>tepat 2 barang berbeda</strong> di etalase toko yang jika dijumlahkan harganya <strong>sama persis</strong> dengan <code>V</code> rupiah (tidak boleh kurang dan tidak boleh lebih).</p>
+<p>Diberikan daftar harga <span class="var-math">N</span> barang di etalase dan nilai voucher <code>V</code>. Periksalah apakah Andi <strong>BISA</strong> menemukan 2 barang yang total harganya pas sama dengan <code>V</code>!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (banyaknya barang).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (harga masing-masing barang).</li>
+<li>Baris ketiga berisi satu bilangan bulat <code>V</code> (nominal voucher).</li>
+<li>Output berupa <code>"BISA"</code> jika ada dua barang berbeda yang jumlah harganya sama dengan <code>V</code>, atau <code>"TIDAK BISA"</code> jika tidak ada.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">2 &le; N &le; 100</span></li>
+<li><span class="math-badge">1000 &le; harga[i], V &le; 1000000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+15000 40000 25000 10000 35000
+50000</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">BISA</code></pre>
+<p><em>(Alasan: Ada barang seharga 15000 dan 35000 yang jika dijumlahkan = 50000, atau 40000 + 10000 = 50000).</em></p>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+25000 10000 15000 30000
+50000</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">TIDAK BISA</code></pre>
+<p><em>(Catatan: Meskipun <span class="math-badge">25000 + 25000 = 50000</span>, barang seharga 25000 hanya ada satu, tidak boleh membeli barang yang sama dua kali!)</em></p>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+25000 25000 10000
+50000</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">BISA</code></pre>
+<div class="decom-box"><h4>📝 Lembar Analisis & Dekomposisi (Isi Sebelum Ngoding!)</h4>
+<ol>
+<li><strong>Simulasi Manual:</strong> Pada Test Case 2 (<code>25000, 10000, 15000, 30000</code>), tuliskan semua pasangan 2 barang yang mungkin dibeli Andi:</li>
+</ol>
+<ul>
+<li>Barang ke-0 (<code>25000</code>) dipasangkan dengan: indeks <code>1</code>, indeks <code>2</code>, indeks <code>3</code>.</li>
+<li>Barang ke-1 (<code>10000</code>) dipasangkan dengan: indeks <code>...</code>, indeks <code>...</code></li>
+<li>Barang ke-2 (<code>15000</code>) dipasangkan dengan: indeks <code>...</code></li>
+</ul>
+<ol>
+<li><strong>Peringatan Penting:</strong> Mengapa barang ke-0 <strong>tidak boleh</strong> dipasangkan dengan barang ke-0 sendiri?</li>
+</ol>
+</div> <!-- /.decom-box -->
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Kasus 3: Rekor Hari Cerah Berturut-Turut Terpanjang (<em>Longest Streak</em>)</h2></div>
+<p><strong>Skenario Masalah:</strong></p>
+<p>Seorang petani mencatat kondisi cuaca selama <span class="var-math">N</span> hari menggunakan kode angka:</p>
+<ul>
+<li>Angka <strong><code>0</code></strong> berarti cuaca <strong>CERAH</strong>.</li>
+<li>Angka <strong><code>1</code></strong> berarti turun <strong>HUJAN</strong>.</li>
+</ul>
+<p>Petani ingin mengetahui berapakah <strong>rekor jumlah hari CERAH (<code>0</code>) berturut-turut paling panjang</strong> tanpa terputus oleh hujan!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (jumlah hari pengamatan).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> angka (hanya bernilai <code>0</code> atau <code>1</code>).</li>
+<li>Output berupa satu angka yaitu panjang rentetan angka <code>0</code> terpanjang.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li>Elemen array hanya bernilai <code>0</code> atau <code>1</code>.</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">10
+0 0 1 0 0 0 0 1 0 0</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rekor cerah terpanjang: 4</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+1 1 1 1 1</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rekor cerah terpanjang: 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+1 0 0 0 0 0</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rekor cerah terpanjang: 5</code></pre>
+<div class="decom-box"><h4>📝 Lembar Analisis & Dekomposisi (Isi Sebelum Ngoding!)</h4>
+<ol>
+<li><strong>Simulasi Otak Manusia:</strong> Bayangkan kamu membaca deretan <code>0 0 1 0 0 0 0 1 0 0</code> satu per satu dari kiri ke kanan.</li>
+</ol>
+<ul>
+<li>Kamu butuh <strong>dua catatan di kepalamu</strong>: <code>cerahSekarang</code> (berapa hari cerah yang sedang berlangsung saat ini) dan <code>rekorTerbaik</code> (rekor tertinggi yang pernah dicapai sejauh ini).</li>
+<li>Apa yang kamu lakukan pada <code>cerahSekarang</code> setiap kali melihat angka <code>0</code>?</li>
+<li>Apa yang kamu lakukan pada <code>cerahSekarang</code> begitu tiba-tiba melihat angka <code>1</code> (Hujan)?</li>
+<li>Kapan <code>rekorTerbaik</code> diperbarui?</li>
+</ul>
+</div> <!-- /.decom-box -->
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Kasus 4: Pemilihan Ketua Kelas (Mencari Suara Terbanyak / Modus)</h2></div>
+<p><strong>Skenario Masalah:</strong></p>
+<p>Pemilihan ketua kelas dilakukan secara tertutup. Terdapat <span class="var-math">N</span> lembar surat suara yang masuk. Setiap surat suara berisi <strong>satu nomor urut kandidat</strong> yang dipilih (misalnya kandidat nomor <code>1</code>, <code>2</code>, <code>3</code>, atau nomor lainnya).</p>
+<p>Buatlah program untuk menghitung hasil pemungutan suara dan menentukan <strong>kandidat nomor berapa yang memperoleh suara terbanyak</strong>, beserta <strong>jumlah suaranya</strong>! <em>(Dijamin tidak ada dua kandidat dengan jumlah suara tertinggi yang seri)</em>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (jumlah surat suara).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (nomor kandidat pada tiap surat suara).</li>
+<li>Output menampilkan nomor kandidat pemenang dan total suara yang didapatnya.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">1 &le; pilihan[i] &le; 100</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">8
+2 5 2 8 5 2 5 2</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Pemenang: Kandidat 2
+Jumlah Suara: 4</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+10 20 10 30 20 20</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Pemenang: Kandidat 20
+Jumlah Suara: 3</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+7 7 7 7 7</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Pemenang: Kandidat 7
+Jumlah Suara: 5</code></pre>
+<div class="decom-box"><h4>📝 Lembar Analisis & Dekomposisi (Isi Sebelum Ngoding!)</h4>
+<ol>
+<li><strong>Pecah Masalah:</strong> Kamu sudah pernah membuat program untuk menghitung berapa kali sebuah angka <span class="var-math">X</span> muncul di dalam array (Paket 05 Soal 4 / Paket Kelas Soal 8).</li>
+</ol>
+<ul>
+<li>Sekarang, bagaimana jika angka yang ingin dihitung kemunculannya adalah <strong>setiap elemen <code>pilihan[i]</code></strong> di dalam array itu sendiri?</li>
+</ul>
+<ol>
+<li><strong>Eksplorasi Alternatif:</strong></li>
+</ol>
+<ul>
+<li><em>Cara A:</em> Untuk setiap elemen di indeks <code>i</code>, hitung berapa kali angka tersebut muncul di seluruh array, lalu bandingkan dengan <code>suaraTerbanyak</code>.</li>
+<li><em>Cara B:</em> Bagaimana jika kertas suaranya <strong>diurutkan dulu</strong> (<code>2 2 2 2 5 5 5 8</code>)? Apakah menghitungnya jadi lebih mudah?</li>
+</ul>
+</div> <!-- /.decom-box -->
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Kasus 5: Menggabungkan Dua Kelas ke Satu Daftar Urut</h2></div>
+<p><strong>Skenario Masalah:</strong></p>
+<p>Sekolah ingin menggabungkan data nilai dari <strong>Kelas A</strong> (berisi <span class="var-math">N</span> siswa) dan <strong>Kelas B</strong> (berisi <span class="var-math">M</span> siswa) menjadi satu daftar gabungan berukuran <span class="math-badge">N + M</span> siswa, kemudian menampilkannya dalam keadaan <strong>terurut dari nilai terkecil hingga nilai terbesar</strong>!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (jumlah siswa Kelas A).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (nilai siswa Kelas A).</li>
+<li>Baris ketiga berisi bilangan bulat <span class="var-math">M</span> (jumlah siswa Kelas B).</li>
+<li>Baris keempat berisi <span class="var-math">M</span> bilangan bulat (nilai siswa Kelas B).</li>
+<li>Output berupa <span class="math-badge">N + M</span> nilai gabungan yang sudah terurut naik.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N, M &le; 50</span> (sehingga total gabungan maksimal 100)</li>
+<li><span class="math-badge">0 &le; nilai &le; 100</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+80 60 90
+4
+75 85 50 70</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">50 60 70 75 80 85 90</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">2
+100 50
+2
+90 60</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">50 60 90 100</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+75
+2
+80 70</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">70 75 80</code></pre>
+<div class="decom-box"><h4>📝 Lembar Analisis & Dekomposisi (Isi Sebelum Ngoding!)</h4>
+<ol>
+<li><strong>Pecah Masalah Menjadi Tahap Kecil:</strong> Jangan bingung melihat 2 array input! Pecah menjadi:</li>
+</ol>
+<ul>
+<li><em>Tahap 1:</em> Bagaimana cara memasukkan semua isi Kelas A dan Kelas B ke dalam satu array besar <code>gabungan[100]</code>?</li>
+<li><em>Tahap 2:</em> Jika <code>gabungan[]</code> sudah berisi seluruh <span class="math-badge">N + M</span> angka, algoritma apa yang kamu gunakan untuk mengurutkannya?</li>
+</ul>
+</div> <!-- /.decom-box -->
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Panduan Pengajar: Dekomposisi & Perbandingan Alternatif Algoritma (Paket 02)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="teacher-group"><div class="teacher-group-title">🎯 Pembahasan Kasus 1: Pemisahan Antrean Pasien Lansia & Reguler</div>
+<div class="card"><div class="card-header-accent"><h2>Dekomposisi Masalah:</h2></div>
+<p>Masalah ini menguji apakah siswa mampu membedakan antara <strong>Pengelompokan (<em>Filtering/Partitioning</em>)</strong> dengan <strong>Pengurutan (<em>Sorting</em>)</strong>. Karena urutan kedatangan di dalam masing-masing kelompok tidak boleh berubah, kita tidak boleh menggunakan <em>Bubble Sort</em> biasa.</p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pendekatan A: Dua Kali Perjalanan Loop Cetak (Sangat Sederhana)</h2></div>
+<ol>
+<li><strong>Loop Pertama:</strong> Telusuri dari awal sampai akhir, cetak hanya yang berusia <span class="math-badge">&ge; 60</span>.</li>
+<li><strong>Loop Kedua:</strong> Telusuri lagi dari awal sampai akhir, cetak hanya yang berusia <span class="math-badge">&lt; 60</span>.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int usia[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; usia[i];
+    }
+
+    // Tahap 1: Panggil semua Lansia (&gt;= 60) sesuai urutan datang
+    for (int i = 0; i &lt; n; i++) {
+        if (usia[i] &gt;= 60) {
+            cout &lt;&lt; usia[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+
+    // Tahap 2: Panggil semua Reguler (&lt; 60) sesuai urutan datang
+    for (int i = 0; i &lt; n; i++) {
+        if (usia[i] &lt; 60) {
+            cout &lt;&lt; usia[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pendekatan B: Menyusun ke Array Baru (<code>hasil[]</code>) dengan Penunjuk Posisi</h2></div>
+<p>Jika datanya harus disimpan ke dalam sebuah array baru untuk diolah lebih lanjut:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int usia[100], hasil[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; usia[i];
+    }
+
+    int pos = 0; // Penunjuk indeks pengisian untuk array hasil[]
+
+    // Masukkan lansia dulu
+    for (int i = 0; i &lt; n; i++) {
+        if (usia[i] &gt;= 60) {
+            hasil[pos] = usia[i];
+            pos++;
+        }
+    }
+
+    // Lanjutkan masukkan reguler
+    for (int i = 0; i &lt; n; i++) {
+        if (usia[i] &lt; 60) {
+            hasil[pos] = usia[i];
+            pos++;
+        }
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; hasil[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /.teacher-group -->
+<div class="teacher-group"><div class="teacher-group-title">🎯 Pembahasan Kasus 2: Mencocokkan Dua Barang dengan Nominal Voucher</div>
+<div class="card"><div class="card-header-accent"><h2>Pendekatan A: Periksa Semua Pasangan Barang dengan Nested Loop</h2></div>
+<p>Pasangkan setiap barang di indeks <code>i</code> dengan setiap barang lain di indeks <code>j</code> (di mana <code>j</code> mulai dari <code>i + 1</code> agar tidak memasangkan barang yang sama dua kali).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, v;
+    cin &gt;&gt; n;
+
+    int harga[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; harga[i];
+    }
+    cin &gt;&gt; v;
+
+    bool bisa = false;
+    for (int i = 0; i &lt; n - 1; i++) {
+        for (int j = i + 1; j &lt; n; j++) {
+            if (harga[i] + harga[j] == v) {
+                bisa = true;
+                break;
+            }
+        }
+    }
+
+    if (bisa) cout &lt;&lt; &quot;BISA&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;TIDAK BISA&quot; &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pendekatan B: Urutkan Dulu, Lalu Gunakan Dua Penunjuk (<em>Two Pointers</em>)</h2></div>
+<p>Jika harga barang diurutkan dari termurah ke termahal, kita bisa menaruh penunjuk <code>kiri = 0</code> (termurah) dan <code>kanan = n - 1</code> (termahal):</p>
+<ul>
+<li>Jika <code>harga[kiri] + harga[kanan] == v</code> <span class="math-badge">&rarr;</span> Ketemu!</li>
+<li>Jika jumlahnya terlalu kecil (<span class="math-badge">&lt; v</span>) <span class="math-badge">&rarr;</span> Geser <code>kiri++</code> (cari yang lebih mahal).</li>
+<li>Jika jumlahnya terlalu besar (<span class="math-badge">&gt; v</span>) <span class="math-badge">&rarr;</span> Geser <code>kanan--</code> (cari yang lebih murah).</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, v;
+    cin &gt;&gt; n;
+
+    int harga[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; harga[i];
+    }
+    cin &gt;&gt; v;
+
+    // Tahap 1: Urutkan harga dengan Bubble Sort
+    for (int tahap = 0; tahap &lt; n - 1; tahap++) {
+        for (int i = 0; i &lt; n - 1 - tahap; i++) {
+            if (harga[i] &gt; harga[i + 1]) {
+                int temp = harga[i];
+                harga[i] = harga[i + 1];
+                harga[i + 1] = temp;
+            }
+        }
+    }
+
+    // Tahap 2: Pencarian Dua Ujung (Two Pointers)
+    int kiri = 0, kanan = n - 1;
+    bool bisa = false;
+    while (kiri &lt; kanan) {
+        int jumlah = harga[kiri] + harga[kanan];
+        if (jumlah == v) {
+            bisa = true;
+            break;
+        } else if (jumlah &lt; v) {
+            kiri++;
+        } else {
+            kanan--;
+        }
+    }
+
+    if (bisa) cout &lt;&lt; &quot;BISA&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;TIDAK BISA&quot; &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /.teacher-group -->
+<div class="teacher-group"><div class="teacher-group-title">🎯 Pembahasan Kasus 3: Rekor Hari Cerah Berturut-Turut Terpanjang</div>
+<div class="card"><div class="card-header-accent"><h2>Pendekatan A: Pelacakan State dalam 1 Loop (<code>cerahSekarang</code> & <code>rekorMaks</code>)</h2></div>
+<p>Pendekatan paling elegan: gunakan variabel <code>cerahSekarang</code> yang bertambah saat melihat <code>0</code>, dan langsung ter-reset menjadi <code>0</code> saat melihat <code>1</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int cuaca[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; cuaca[i];
+    }
+
+    int cerahSekarang = 0;
+    int rekorMaks = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        if (cuaca[i] == 0) {
+            cerahSekarang++;
+            if (cerahSekarang &gt; rekorMaks) {
+                rekorMaks = cerahSekarang;
+            }
+        } else {
+            cerahSekarang = 0; // Terputus oleh hujan, reset kembali ke 0
+        }
+    }
+
+    cout &lt;&lt; &quot;Rekor cerah terpanjang: &quot; &lt;&lt; rekorMaks &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pendekatan B: Hitung Rentetan Maju dari Setiap Posisi <code>i</code> (Nested Loop)</h2></div>
+<p>Sebagian siswa lebih mudah berpikir: <em>"Dari setiap hari ke-<code>i</code>, hitung ada berapa angka <code>0</code> berurutan mulai dari hari <code>i</code> tersebut sampai ketemu angka <code>1</code>."</em></p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int cuaca[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; cuaca[i];
+    }
+
+    int rekorMaks = 0;
+    for (int i = 0; i &lt; n; i++) {
+        int hitung = 0;
+        for (int j = i; j &lt; n; j++) {
+            if (cuaca[j] == 0) {
+                hitung++;
+            } else {
+                break; // Berhenti menghitung karena ketemu hujan
+            }
+        }
+        if (hitung &gt; rekorMaks) {
+            rekorMaks = hitung;
+        }
+    }
+
+    cout &lt;&lt; &quot;Rekor cerah terpanjang: &quot; &lt;&lt; rekorMaks &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /.teacher-group -->
+<div class="teacher-group"><div class="teacher-group-title">🎯 Pembahasan Kasus 4: Pemilihan Ketua Kelas (Modus / Suara Terbanyak)</div>
+<div class="card"><div class="card-header-accent"><h2>Pendekatan A: Hitung Frekuensi Tiap Elemen dengan Nested Loop</h2></div>
+<p>Untuk setiap elemen <code>pilihan[i]</code>, kita jalankan loop dalam untuk menghitung berapa kali kandidat tersebut muncul di seluruh array.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int pilihan[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; pilihan[i];
+    }
+
+    int pemenang = pilihan[0];
+    int suaraTerbanyak = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        int hitungSuara = 0;
+        for (int j = 0; j &lt; n; j++) {
+            if (pilihan[j] == pilihan[i]) {
+                hitungSuara++;
+            }
+        }
+
+        if (hitungSuara &gt; suaraTerbanyak) {
+            suaraTerbanyak = hitungSuara;
+            pemenang = pilihan[i];
+        }
+    }
+
+    cout &lt;&lt; &quot;Pemenang: Kandidat &quot; &lt;&lt; pemenang &lt;&lt; endl;
+    cout &lt;&lt; &quot;Jumlah Suara: &quot; &lt;&lt; suaraTerbanyak &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pendekatan B: Urutkan Surat Suara, Lalu Hitung Rentetan yang Sama</h2></div>
+<p>Jika surat suara diurutkan dulu (misal <code>2 5 2 8 5 2 5 2</code> menjadi <code>2 2 2 2 5 5 5 8</code>), maka nomor kandidat yang sama akan berdempetan dan bisa dihitung persis seperti menghitung <em>streak</em> pada Kasus 3!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int pilihan[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; pilihan[i];
+    }
+
+    // Tahap 1: Urutkan surat suara dengan Bubble Sort
+    for (int tahap = 0; tahap &lt; n - 1; tahap++) {
+        for (int i = 0; i &lt; n - 1 - tahap; i++) {
+            if (pilihan[i] &gt; pilihan[i + 1]) {
+                int temp = pilihan[i];
+                pilihan[i] = pilihan[i + 1];
+                pilihan[i + 1] = temp;
+            }
+        }
+    }
+
+    // Tahap 2: Hitung rentetan angka yang sama bersebelahan
+    int pemenang = pilihan[0];
+    int suaraTerbanyak = 1;
+    int suaraSaatIni = 1;
+
+    for (int i = 1; i &lt; n; i++) {
+        if (pilihan[i] == pilihan[i - 1]) {
+            suaraSaatIni++;
+        } else {
+            suaraSaatIni = 1;
+        }
+
+        if (suaraSaatIni &gt; suaraTerbanyak) {
+            suaraTerbanyak = suaraSaatIni;
+            pemenang = pilihan[i];
+        }
+    }
+
+    cout &lt;&lt; &quot;Pemenang: Kandidat &quot; &lt;&lt; pemenang &lt;&lt; endl;
+    cout &lt;&lt; &quot;Jumlah Suara: &quot; &lt;&lt; suaraTerbanyak &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /.teacher-group -->
+<div class="teacher-group"><div class="teacher-group-title">🎯 Pembahasan Kasus 5: Menggabungkan Dua Kelas ke Satu Daftar Urut</div>
+<div class="card"><div class="card-header-accent"><h2>Dekomposisi Masalah:</h2></div>
+<ol>
+<li><strong>Tahap 1:</strong> Baca <span class="var-math">N</span> elemen Kelas A dan masukkan ke indeks <code>0</code> s/d <code>N - 1</code> pada array <code>gabungan[]</code>.</li>
+<li><strong>Tahap 2:</strong> Baca <span class="var-math">M</span> elemen Kelas B dan masukkan ke indeks <code>N</code> s/d <code>N + M - 1</code> pada array <code>gabungan[]</code>.</li>
+<li><strong>Tahap 3:</strong> Jalankan <em>Bubble Sort</em> pada array <code>gabungan[]</code> sepanjang <code>total = N + M</code>.</li>
+</ol>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Kode Solusi Acuan:</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, m;
+    int gabungan[100];
+
+    // Tahap 1: Masukkan data Kelas A ke dalam array gabungan
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; gabungan[i];
+    }
+
+    // Tahap 2: Masukkan data Kelas B melanjutkan posisi setelah Kelas A
+    cin &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        cin &gt;&gt; gabungan[n + i];
+    }
+
+    int totalSiswa = n + m;
+
+    // Tahap 3: Urutkan array gabungan menggunakan Bubble Sort
+    for (int tahap = 0; tahap &lt; totalSiswa - 1; tahap++) {
+        for (int i = 0; i &lt; totalSiswa - 1 - tahap; i++) {
+            if (gabungan[i] &gt; gabungan[i + 1]) {
+                int temp = gabungan[i];
+                gabungan[i] = gabungan[i + 1];
+                gabungan[i + 1] = temp;
+            }
+        }
+    }
+
+    // Tahap 4: Tampilkan hasil akhir
+    for (int i = 0; i &lt; totalSiswa; i++) {
+        cout &lt;&lt; gabungan[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /.teacher-group -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

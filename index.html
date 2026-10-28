@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Bank Soal & Modul Praktikum — Pemrograman Dasar C++</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f8fafc;
+            --bg-btn-sec: #f1f5f9;
+            --bg-btn-sec-hover: #e2e8f0;
+            --text-main: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --emerald: #059669;
+            --emerald-light: #ecfdf5;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --amber: #d97706;
+            --amber-light: #fffbeb;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --inline-code-bg: #e2e8f0;
+            --inline-code-text: #0f172a;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-btn-sec: #0f172a;
+            --bg-btn-sec-hover: #334155;
+            --text-main: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --emerald: #34d399;
+            --emerald-light: rgba(52, 211, 153, 0.15);
+            --purple: #a78bfa;
+            --purple-light: rgba(167, 139, 250, 0.15);
+            --amber: #fbbf24;
+            --amber-light: rgba(251, 191, 36, 0.15);
+            --border: #334155;
+            --border-hover: #475569;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem 4rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-top-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            color: #93c5fd;
+            padding: 0.3rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.35rem 0.9rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: center;
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+
+        .stat-item span {
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* Navigation Tabs & Search */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            background: var(--bg-btn-sec);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 260px;
+            flex: 1;
+            max-width: 340px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-subtle);
+            color: var(--text-main);
+            font-size: 0.875rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Section Titles */
+        .section-block {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* 9 JP Roadmap Strip */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .roadmap-step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.15rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .roadmap-step.step-green { border-top-color: var(--emerald); }
+        .roadmap-step.step-purple { border-top-color: var(--purple); }
+        .roadmap-step.step-amber { border-top-color: var(--amber); }
+
+        .jp-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-step h4 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.35rem;
+        }
+
+        .roadmap-step p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .roadmap-link {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .roadmap-link:hover { text-decoration: underline; }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .pkg-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .pkg-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.15);
+            border-color: var(--border-hover);
+        }
+
+        .pkg-top {
+            margin-bottom: 1.25rem;
+        }
+
+        .pkg-badges {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.85rem;
+        }
+
+        .badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-green { background: var(--emerald-light); color: var(--emerald); }
+        .badge-blue { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-amber { background: var(--amber-light); color: var(--amber); }
+
+        .soal-count {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .pkg-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .pkg-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .topic-list {
+            list-style: none;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .topic-list li {
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+
+        .topic-list li:last-child { margin-bottom: 0; }
+
+        .topic-list li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.88em;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.1rem 0.35rem;
+            border-radius: 4px;
+        }
+
+        .pkg-actions {
+            display: flex;
+            gap: 0.6rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .btn-main {
+            flex: 1;
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-main:hover { background: var(--primary-hover); }
+
+        .btn-sec {
+            background: var(--bg-btn-sec);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-sec:hover { background: var(--bg-btn-sec-hover); }
+
+        /* Assistant SOP Box */
+        .sop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .sop-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--purple);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .sop-card h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            color: var(--purple);
+        }
+
+        .sop-card ul {
+            margin-left: 1.2rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .sop-card li { margin-bottom: 0.4rem; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Header -->
+        <header class="hero">
+            <div class="hero-content">
+                <div class="hero-top-row">
+                    <span class="hero-badge">Repositori Bank Soal C++</span>
+                    <button id="btnThemeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
+                        🌙 Dark Mode
+                    </button>
+                </div>
+                <h1>Portal Navigasi Modul & Latihan Pemrograman Dasar</h1>
+                <p>Pusat kendali materi latihan mandiri, pemanasan terisolasi, studi kasus dekomposisi masalah, dan panduan pelaksanaan laboratorium 9 JP.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <strong>9</strong>
+                    <span>Paket Modul</span>
+                </div>
+                <div class="stat-item">
+                    <strong>56</strong>
+                    <span>Total Soal</span>
+                </div>
+                <div class="stat-item">
+                    <strong>100%</strong>
+                    <span>Dark & Print Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 9 JP Quick Execution Roadmap -->
+        <section class="section-block" id="roadmap-section">
+            <div class="section-header">
+                <h2>⏱️ Peta Jalan Sesi Laboratorium (9 JP)</h2>
+                <span class="section-subtitle">Klik tautan di tiap sesi untuk langsung membuka lembar soal terkait</span>
+            </div>
+            <div class="roadmap-grid">
+                <div class="roadmap-step step-green">
+                    <span class="jp-tag">Sesi 1 • JP 1–2 (90m)</span>
+                    <h4>Pemanasan Isolasi Topik</h4>
+                    <p>Membangun memori motorik indeks & loop dasar tanpa logika campuran.</p>
+                    <a class="roadmap-link" href="outputs/pemrograman/cpp/pemanasan-array-1d/20261029_pemanasan-array-1d_coding-challenge_beginner_01.html">Buka Paket Pemanasan &rarr;</a>
+                </div>
+                <div class="roadmap-step">
+                    <span class="jp-tag">Sesi 2 • JP 3–4 (90m)</span>
+                    <h4>Sprint Array & Pencarian</h4>
+                    <p>Latihan mandiri filter nilai, akumulasi rata-rata, Max/Min, & Linear Search.</p>
+                    <a class="roadmap-link" href="outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_01.html">Buka Modul Kelas Utama &rarr;</a>
+                </div>
+                <div class="roadmap-step step-purple">
+                    <span class="jp-tag">Sesi 3 • JP 5–6 (90m)</span>
+                    <h4>Dekomposisi & Problem Solving</h4>
+                    <p>Aturan "10 Menit Tanpa Keyboard": merancang algoritma dari studi kasus buta.</p>
+                    <a class="roadmap-link" href="outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_01.html">Buka Paket Dekomposisi 01 &rarr;</a>
+                </div>
+                <div class="roadmap-step step-amber">
+                    <span class="jp-tag">Sesi 4 • JP 7–8 (90m)</span>
+                    <h4>Jembatan Sorting & Diskusi</h4>
+                    <p>Praktek teknik Swap, 1-Pass Bubble, dan bedah perbandingan Pendekatan A vs B.</p>
+                    <a class="roadmap-link" href="outputs/pemrograman/cpp/searching-dan-sorting/20261028_searching-dan-sorting_coding-challenge_beginner_01.html">Buka Paket Search & Sort &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter & Search Bar -->
+        <div class="controls-bar">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="filterCards('all', this)">Semua Paket (9)</button>
+                <button class="tab-btn" onclick="filterCards('lab', this)">Pemanasan & Modul Lab (2)</button>
+                <button class="tab-btn" onclick="filterCards('dekomposisi', this)">Problem Solving & Dekomposisi (2)</button>
+                <button class="tab-btn" onclick="filterCards('rumah', this)">Bank Soal Kumulatif Rumah (5)</button>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari topik (misal: bubble sort, swap, suhu, while)..." onkeyup="searchCards()">
+            </div>
+        </div>
+
+        <!-- Question Packages Grid -->
+        <section class="section-block">
+            <div class="cards-grid" id="cardsContainer">
+
+                <!-- Card 1: Pemanasan Kilat -->
+                <article class="pkg-card" data-category="lab">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-green">Pemanasan Lab • JP 1–2</span>
+                            <span class="soal-count">10 Soal Coding</span>
+                        </div>
+                        <h3>Paket Pemanasan Kilat: Isolasi Konsep Array 1D</h3>
+                        <p class="pkg-desc">Dirancang khusus untuk awal sesi. Setiap soal hanya menguji 1 konsep mikro secara terisolasi dari level paling mudah.</p>
+                        <ul class="topic-list">
+                            <li>Akses langsung ujung array (<code>arr[0]</code> & <code>arr[n-1]</code>)</li>
+                            <li>Loop cetak maju, nomor urut <code>i + 1</code>, & loop mundur</li>
+                            <li>Isolasi indeks genap (<code>i</code>) vs nilai positif (<code>arr[i]</code>)</li>
+                            <li>Counter kelipatan 5, akumulator sum, & ganti nilai <code>0</code> jadi <code>-1</code></li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/pemanasan-array-1d/20261029_pemanasan-array-1d_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/pemanasan-array-1d/20261029_pemanasan-array-1d_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 2: Modul Utama Kelas -->
+                <article class="pkg-card" data-category="lab">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-blue">Modul Inti Kelas • JP 3–4</span>
+                            <span class="soal-count">11 Soal Berjenjang</span>
+                        </div>
+                        <h3>Modul Latihan Mandiri: Array 1D & Jembatan Bubble Sort</h3>
+                        <p class="pkg-desc">Paket latihan terstruktur 4 level dari pemantapan indeks, pencarian ekstremum, hingga pengantar mekanisme pengurutan.</p>
+                        <ul class="topic-list">
+                            <li>Level 1: Reverse print, filter nilai genap/ganjil, hitung KKM</li>
+                            <li>Level 2: Total & rata-rata, nilai maksimum, nilai minimum + indeks</li>
+                            <li>Level 3: Linear search dengan <code>break</code> & hitung frekuensi</li>
+                            <li>Level 4: Swap dengan <code>temp</code>, tukar ujung, & <strong>1-Pass Bubble</strong></li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 3: Dekomposisi Paket 01 -->
+                <article class="pkg-card" data-category="dekomposisi">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-purple">Problem Solving 01 • JP 5–6</span>
+                            <span class="soal-count">5 Studi Kasus</span>
+                        </div>
+                        <h3>Paket 01: Analisis Masalah & Eksplorasi Alternatif Algoritma</h3>
+                        <p class="pkg-desc">Soal cerita tanpa petunjuk sintaks. Dilengkapi Lembar Kerja Dekomposisi & perbandingan 2 algoritma berbeda (Pendekatan A vs B).</p>
+                        <ul class="topic-list">
+                            <li>Kasus 1: Kebijakan Nilai Katrol (Dekomposisi multi-tahap)</li>
+                            <li>Kasus 2: Barisan Parade Simetris (Array balik vs Two Pointers)</li>
+                            <li>Kasus 3: Peraih Medali Perak / Juara Ke-2 (2x Max vs Sorting)</li>
+                            <li>Kasus 4 & 5: Audit Nomor Seri Kembar & Rotasi Giliran Jaga</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 4: Dekomposisi Paket 02 -->
+                <article class="pkg-card" data-category="dekomposisi">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-purple">Problem Solving 02 • Lanjutan</span>
+                            <span class="soal-count">5 Studi Kasus</span>
+                        </div>
+                        <h3>Paket 02: Dekomposisi Lanjutan & Pola Algoritma Nyata</h3>
+                        <p class="pkg-desc">Tantangan logika lanjutan untuk melatih pemecahan masalah, pelacakan rentetan (streak), dan kombinasi pencarian-pengurutan.</p>
+                        <ul class="topic-list">
+                            <li>Kasus 1: Pemisahan Antrean Lansia & Reguler (Partitioning)</li>
+                            <li>Kasus 2: Mencocokkan 2 Barang dgn Voucher (Two-Sum)</li>
+                            <li>Kasus 3: Rekor Hari Cerah Terpanjang (Longest Streak)</li>
+                            <li>Kasus 4 & 5: Pemilihan Ketua Kelas (Modus) & Gabung 2 Kelas</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_02.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_02.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 5: Rumah Paket 01 -->
+                <article class="pkg-card" data-category="rumah">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-amber">Bank Soal Rumah • Paket 01</span>
+                            <span class="soal-count">2 Trace • 1 Bug • 2 Code</span>
+                        </div>
+                        <h3>Paket Rumah 01: Variabel, Operator (<code>/</code>, <code>%</code>), & <code>if-else</code></h3>
+                        <p class="pkg-desc">Penguatan pondasi mutasi variabel, pembagian bilangan bulat vs sisa bagi, serta urutan kondisi percabangan majemuk.</p>
+                        <ul class="topic-list">
+                            <li>Tracing tabel perubahan nilai 4 variabel bertahap</li>
+                            <li>Tracing jalur logika <code>&&</code> dan <code>||</code></li>
+                            <li>Detektif Bug: Urutan batas nilai Grade A/B/C/D yang terbalik</li>
+                            <li>Koding: Konversi Jam-Menit-Detik & Kasir Diskon Bertingkat</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/variabel-dan-percabangan/20261028_variabel-dan-percabangan_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/variabel-dan-percabangan/20261028_variabel-dan-percabangan_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 6: Rumah Paket 02 -->
+                <article class="pkg-card" data-category="rumah">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-amber">Bank Soal Rumah • Paket 02</span>
+                            <span class="soal-count">2 Trace • 1 Bug • 2 Code</span>
+                        </div>
+                        <h3>Paket Rumah 02: Logika Perulangan <code>while</code> & <code>for</code></h3>
+                        <p class="pkg-desc">Mengasah kepekaan kapan loop berhenti, lompatan iterasi, dan kesalahan klasik menaruh inisialisasi variabel di dalam loop.</p>
+                        <ul class="topic-list">
+                            <li>Tracing tabel pembagian berulang di dalam <code>while</code></li>
+                            <li>Tracing <code>for</code> loop dengan kenaikan <code>i += 2</code></li>
+                            <li>Detektif Bug: Variabel <code>total = 0</code> yang ter-reset di dalam loop</li>
+                            <li>Koding: Simulasi Menabung Celengan & Permainan Tepuk 3-5</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/perulangan-while-for/20261028_perulangan-while-for_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/perulangan-while-for/20261028_perulangan-while-for_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 7: Rumah Paket 03 -->
+                <article class="pkg-card" data-category="rumah">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-amber">Bank Soal Rumah • Paket 03</span>
+                            <span class="soal-count">2 Trace • 1 Bug • 2 Code</span>
+                        </div>
+                        <h3>Paket Rumah 03: Dasar Array 1D & Kombinasi Loop</h3>
+                        <p class="pkg-desc">Latihan melacak modifikasi elemen array, akses indeks dua arah, serta mengatasi bug Off-by-One (<code>i <= n</code>).</p>
+                        <ul class="topic-list">
+                            <li>Tracing perubahan isi elemen array berdasarkan indeks</li>
+                            <li>Tracing penjumlahan ujung ke ujung (<code>arr[i] + arr[n-1-i]</code>)</li>
+                            <li>Detektif Bug: Error <em>Out-of-Bounds</em> & tertukarnya indeks vs isi</li>
+                            <li>Koding: Analisis Suhu Di Atas Rata-Rata & Sensor Pembersih Negatif</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_02.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_02.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 8: Rumah Paket 04 -->
+                <article class="pkg-card" data-category="rumah">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-amber">Bank Soal Rumah • Paket 04</span>
+                            <span class="soal-count">2 Trace • 1 Bug • 2 Code</span>
+                        </div>
+                        <h3>Paket Rumah 04: Perbandingan Antar-Elemen Bersebelahan</h3>
+                        <p class="pkg-desc">Melatih pola perbandingan tetangga (<code>arr[i]</code> dengan <code>arr[i+1]</code>) dan pencarian nilai ekstremum yang akurat.</p>
+                        <ul class="topic-list">
+                            <li>Tracing perbandingan kenaikan skor bersebelahan</li>
+                            <li>Tracing pembaruan variabel <code>rekor</code> di sepanjang array</li>
+                            <li>Detektif Bug: Jebakan inisialisasi <code>terkecil = 0</code></li>
+                            <li>Koding: Pemeriksa Array Terurut Naik & Lonjakan Suhu Terbesar</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/array-1d-perbandingan/20261028_array-1d-perbandingan_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/array-1d-perbandingan/20261028_array-1d-perbandingan_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+                <!-- Card 9: Rumah Paket 05 -->
+                <article class="pkg-card" data-category="rumah">
+                    <div class="pkg-top">
+                        <div class="pkg-badges">
+                            <span class="badge badge-amber">Bank Soal Rumah • Paket 05</span>
+                            <span class="soal-count">2 Trace • 1 Bug • 2 Code</span>
+                        </div>
+                        <h3>Paket Rumah 05: Searching (Linear & Binary) & Bubble Sort</h3>
+                        <p class="pkg-desc">Simulasi tabel langkah demi langkah Binary Search dan Bubble Sort di atas kertas beserta implementasi kodenya.</p>
+                        <ul class="topic-list">
+                            <li>Tracing tabel posisi <code>kiri</code>, <code>kanan</code>, <code>tengah</code> Binary Search</li>
+                            <li>Tracing susunan array di setiap tahapan Bubble Sort</li>
+                            <li>Detektif Bug: Swap tanpa variabel <code>temp</code> & batas loop dalam</li>
+                            <li>Koding: Multiple Linear Search & Bubble Sort Nilai Siswa Utuh</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-actions">
+                        <a class="btn btn-main" href="outputs/pemrograman/cpp/searching-dan-sorting/20261028_searching-dan-sorting_coding-challenge_beginner_01.html">🌐 Buka Modul HTML</a>
+                        <a class="btn btn-sec" href="outputs/pemrograman/cpp/searching-dan-sorting/20261028_searching-dan-sorting_coding-challenge_beginner_01.md">📄 .MD</a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Briefing Asisten Kelas 12 & Diagnostik Guru -->
+        <section class="section-block">
+            <div class="section-header">
+                <h2>🤝 Panduan Briefing Asisten Kelas 12 & Diagnostik Lab</h2>
+                <span class="section-subtitle">Tampilkan bagian ini saat briefing pagi bersama kakak kelas asisten</span>
+            </div>
+            <div class="sop-grid">
+                <div class="sop-card">
+                    <h4>🛑 3 Aturan Emas Asisten (Anti-Cheat)</h4>
+                    <ul>
+                        <li><strong>Tangan di Belakang Punggung:</strong> Asisten DILARANG menyentuh keyboard/mouse adik kelas. Biarkan jari adik kelas yang mengetik sendiri.</li>
+                        <li><strong>Jawab dengan Pertanyaan:</strong> Jangan langsung tunjuk letak salahnya. Tanyakan: <em>"Coba baca pesan error compiler di bawah, dia komplain di baris berapa?"</em></li>
+                        <li><strong>Jeda Berpikir 3 Menit:</strong> Biarkan adik kelas mencoba sendiri terlebih dahulu sebelum dibantu.</li>
+                    </ul>
+                </div>
+                <div class="sop-card" style="border-left-color: var(--primary);">
+                    <h4 style="color: var(--primary);">🔍 4 Kategori Diagnosis Kelemahan Siswa</h4>
+                    <ul>
+                        <li><strong>Tipe 1 (Lumpuh Analisis):</strong> Layar kosong bingung mulai dari mana &rarr; Minta simulasi angka kecil di kertas.</li>
+                        <li><strong>Tipe 2 (Tersandung Sintaks):</strong> Logika benar tapi merah di titik-koma/kurung &rarr; Bimbing kerapian indentasi.</li>
+                        <li><strong>Tipe 3 (Tertukar Indeks vs Nilai):</strong> Bingung kapan pakai <code>i</code> vs <code>arr[i]</code> &rarr; Ingatkan analogi nomor loker vs isi loker.</li>
+                        <li><strong>Tipe 4 (Salah State Loop):</strong> Menaruh <code>total = 0</code> di dalam loop &rarr; Lakukan tracing 2 putaran di kertas.</li>
+                    </ul>
+                </div>
+                <div class="sop-card" style="border-left-color: var(--emerald);">
+                    <h4 style="color: var(--emerald);">✅ Mekanisme ACC & Uji Petik 10 Detik</h4>
+                    <ul>
+                        <li>Saat adik kelas memasang tanda <strong>Hijau (Selesai)</strong>, jangan hanya melihat programnya jalan.</li>
+                        <li>Ajukan 1 pertanyaan uji petik singkat: <em>"Baris kode ini fungsinya untuk apa?"</em> atau <em>"Kenapa batas loop-nya <code>n - 1</code>?"</em></li>
+                        <li>Asisten terbaik adalah yang adik bimbingannya mampu menjelaskan kembali alur kodenya dengan lancar!</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function filterCards(category, btnElement) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.pkg-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function searchCards() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.pkg-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(q)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array 1D For Loop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261028-004</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">5 SOAL</span>
+                </div>
+                <h1 class="header-title">Bank Soal Latihan Mandiri di Rumah — Paket 03</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<p><strong>Topik:</strong> Dasar Array 1 Dimensi, Indeks vs Nilai, dan Kombinasi Loop</p>
+<p><strong>Estimasi Waktu:</strong> 25–30 Menit</p>
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN A: Tebak Output & Tabel Tracing (Tanpa Komputer)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 1: Melacak Perubahan Isi Array</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Perhatikan program C++ di bawah ini. Sebuah array <code>data</code> awalnya berisi <code>{4, 7, 2, 9, 6}</code>. Di dalam loop, nilai-nilai di dalam array tersebut dimodifikasi. Lacaklah perubahan isi array dan tuliskan hasil akhirnya!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int data[5] = {4, 7, 2, 9, 6};
+
+    for (int i = 0; i &lt; 5; i++) {
+        if (i % 2 == 0) {
+            data[i] = data[i] + 10;
+        } else {
+            data[i] = data[i] - 3;
+        }
+    }
+
+    for (int i = 0; i &lt; 5; i++) {
+        cout &lt;&lt; data[i] &lt;&lt; &quot; &quot;;
+    }
+    return 0;
+}</code></pre>
+<p><strong>Tabel Tracing (Isilah titik-titik berikut):</strong></p>
+<table><thead><tr>
+<th>Indeks <code>i</code></th>
+<th>Nilai awal <code>data[i]</code></th>
+<th>Apakah <code>i % 2 == 0</code>?</th>
+<th>Operasi yang Dijalankan</th>
+<th>Nilai baru <code>data[i]</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>4</code></td>
+<td>Ya (Genap)</td>
+<td><code>4 + 10</code></td>
+<td><code>14</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>7</code></td>
+<td>Tidak (Ganjil)</td>
+<td><code>7 - 3</code></td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>2</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>9</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td><code>6</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody></table>
+<p><strong>Tebakan Output Akhir:</strong> <code>... ... ... ... ...</code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 2: Akses Indeks dari Dua Arah</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Perhatikan ekspresi di dalam kurung siku <code>arr[...]</code> pada kode berikut. Tentukan apa yang dicetak oleh program ini!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n = 5;
+    int arr[5] = {10, 20, 30, 40, 50};
+
+    for (int i = 0; i &lt; 3; i++) {
+        int jumlah = arr[i] + arr[n - 1 - i];
+        cout &lt;&lt; jumlah &lt;&lt; &quot; &quot;;
+    }
+
+    return 0;
+}</code></pre>
+<p><strong>Pertanyaan:</strong></p>
+<ol>
+<li>Saat <code>i = 0</code>, elemen indeks berapa yang dijumlahkan dengan <code>arr[0]</code>? Berapa hasilnya?</li>
+<li>Saat <code>i = 1</code>, elemen indeks berapa yang dijumlahkan dengan <code>arr[1]</code>? Berapa hasilnya?</li>
+<li>Saat <code>i = 2</code>, elemen indeks berapa yang dijumlahkan dengan <code>arr[2]</code>? Berapa hasilnya?</li>
+<li>Tuliskan output lengkapnya!</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN B: Detektif Bug (Analisis & Perbaikan Kode)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 3: Dua Kesalahan Fatal Akses Array</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Seorang siswa ingin membuat program yang menerima 5 angka ke dalam array, lalu mencetak <strong>hanya angka-angka yang lebih besar dari 50</strong>. Namun kodenya memiliki <strong>2 kesalahan logika</strong>: batas loop yang keliru (<em>Off-by-One Error</em>) dan tertukarnya pengecekan indeks dengan isi elemen.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int arr[5] = {20, 80, 45, 90, 60};
+
+    // KODE YANG BERMASALAH (BUGGY):
+    for (int i = 0; i &lt;= 5; i++) {       // Bug 1
+        if (i &gt; 50) {                    // Bug 2
+            cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+
+    return 0;
+}</code></pre>
+<p><strong>Tugasmu:</strong></p>
+<ol>
+<li>Mengapa syarat <code>i <= 5</code> pada array berukuran 5 berbahaya di C++? Indeks berapa saja yang sah untuk <code>int arr[5]</code>?</li>
+<li>Mengapa <code>if (i > 50)</code> tidak pernah bernilai benar di dalam program tersebut? Apa yang seharusnya diperiksa?</li>
+<li>Tuliskan kembali perulangan <code>for</code> tersebut setelah diperbaiki!</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN C: Tantangan Koding Kontekstual</div></div>
+<div class="card"><div class="card-header"><h2>Soal 4: Analisis Suhu Udara Mingguan (Di Atas Rata-Rata)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Badan meteorologi mencatat suhu udara siang hari selama <span class="var-math">N</span> hari berturut-turut ke dalam sebuah array. Buatlah program untuk:</p>
+<ol>
+<li>Menghitung <strong>rata-rata suhu</strong> selama <span class="var-math">N</span> hari tersebut.</li>
+<li>Menghitung <strong>berapa hari</strong> yang memiliki suhu <strong>lebih tinggi dari rata-rata</strong> tersebut!</li>
+</ol>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (jumlah hari).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (suhu harian dalam derajat Celcius).</li>
+<li>Baris pertama output menampilkan nilai rata-rata suhu, baris kedua menampilkan jumlah hari yang suhunya di atas rata-rata.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">15 &le; suhu[i] &le; 45</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+30 32 28 35 25</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rata-rata suhu: 30
+Hari di atas rata-rata: 2</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+28 30 32 34</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rata-rata suhu: 31
+Hari di atas rata-rata: 2</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+30 30 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Rata-rata suhu: 30
+Hari di atas rata-rata: 0</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Kamu memerlukan <strong>dua tahap loop</strong> (tidak bisa diselesaikan hanya dalam 1 loop sekaligus):</p></div>
+<div class="callout"><p>- <strong>Loop 1:</strong> Hitung <code>total</code> seluruh suhu, lalu bagi dengan <code>n</code> untuk mendapatkan <code>double rataRata</code>.</p></div>
+<div class="callout"><p>- <strong>Loop 2:</strong> Telusuri kembali array dari indeks <code>0</code> sampai <code>n - 1</code>, periksa <code>if (suhu[i] > rataRata)</code>, lalu tambahkan penghitung <code>diAtasRata++</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 5: Sensor Pembersih Data Negatif (Modifikasi Array)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Sebuah alat sensor kadang mengalami gangguan sehingga menghasilkan angka negatif. Buatlah program yang membaca <span class="var-math">N</span> data angka ke dalam array, kemudian <strong>mengubah semua elemen yang bernilai negatif (<span class="math-badge">&lt; 0</span>) di dalam array tersebut menjadi <code>0</code></strong>, sementara angka positif atau nol dibiarkan tetap. Setelah diubah, tampilkan isi array yang sudah bersih!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat (bisa positif, nol, atau negatif).</li>
+<li>Output berupa isi array setelah semua nilai negatif diubah menjadi <code>0</code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+15 -4 20 -12 0 8</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">15 0 20 0 0 8</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+-1 -5 -9 -2</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">0 0 0 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+10 20 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 20 30</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Di dalam loop, periksa <code>if (arr[i] < 0)</code>. Jika benar, timpa isi kotaknya dengan <code>arr[i] = 0;</code>. Setelah itu cetak seluruh elemen array.</p></div>
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Kunci Jawaban & Pembahasan (Paket 03)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 1 (Tracing Modifikasi Array)</h2></div>
+<p>Perhatikan bahwa <code>if (i % 2 == 0)</code> mengecek apakah <strong>nomor indeksnya</strong> genap (<code>0, 2, 4</code>), bukan isi angkanya.</p>
+<table><thead><tr>
+<th>Indeks <code>i</code></th>
+<th>Nilai awal <code>data[i]</code></th>
+<th>Apakah <code>i % 2 == 0</code>?</th>
+<th>Operasi yang Dijalankan</th>
+<th>Nilai baru <code>data[i]</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>4</code></td>
+<td>Ya (Genap)</td>
+<td><code>4 + 10</code></td>
+<td><code>14</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>7</code></td>
+<td>Tidak (Ganjil)</td>
+<td><code>7 - 3</code></td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>2</code></td>
+<td>Ya (Genap)</td>
+<td><code>2 + 10</code></td>
+<td><code>12</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>9</code></td>
+<td>Tidak (Ganjil)</td>
+<td><code>9 - 3</code></td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td><code>6</code></td>
+<td>Ya (Genap)</td>
+<td><code>6 + 10</code></td>
+<td><code>16</code></td>
+</tr>
+</tbody></table>
+<p><strong>Output Akhir:</strong> <code>14 4 12 6 16 </code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 2 (Akses Indeks Dua Arah)</h2></div>
+<ol>
+<li>Saat <code>i = 0</code>: <code>arr[0] + arr[5 - 1 - 0]</code> = <code>arr[0] + arr[4]</code> = <code>10 + 50</code> = <strong><code>60</code></strong>.</li>
+<li>Saat <code>i = 1</code>: <code>arr[1] + arr[5 - 1 - 1]</code> = <code>arr[1] + arr[3]</code> = <code>20 + 40</code> = <strong><code>60</code></strong>.</li>
+<li>Saat <code>i = 2</code>: <code>arr[2] + arr[5 - 1 - 2]</code> = <code>arr[2] + arr[2]</code> = <code>30 + 30</code> = <strong><code>60</code></strong>.</li>
+<li><strong>Output lengkap:</strong> <code>60 60 60 </code></li>
+</ol>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 3 (Detektif Bug)</h2></div>
+<ol>
+<li><strong>Bug 1 (<code>i <= 5</code>):</strong> Array berukuran 5 hanya memiliki indeks <strong><code>0, 1, 2, 3, 4</code></strong>. Ketika <code>i</code> mencapai <code>5</code>, program mengakses <code>arr[5]</code> yang berada di luar memori sah (<em>Out-of-Bounds</em>), sehingga bisa memunculkan angka sampah (<em>garbage value</em>) atau membuat program <em>crash</em>.</li>
+<li><strong>Bug 2 (<code>if (i > 50)</code>):</strong> Variabel <code>i</code> adalah nomor indeks (0 s/d 4), sehingga tidak mungkin lebih dari 50. Seharusnya yang diperiksa adalah isi kotaknya, yaitu <code>if (arr[i] > 50)</code>.</li>
+<li><strong>Kode Perbaikan:</strong></li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int arr[5] = {20, 80, 45, 90, 60};
+
+    for (int i = 0; i &lt; 5; i++) {
+        if (arr[i] &gt; 50) {
+            cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 4 (Analisis Suhu Udara Mingguan)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Baca semua data suhu ke dalam array <code>suhu[100]</code> sembari menjumlahkannya ke variabel <code>total</code>.</li>
+<li>Hitung <code>double rataRata = (double)total / n;</code>.</li>
+<li>Lakukan perulangan kedua untuk membandingkan setiap <code>suhu[i]</code> dengan <code>rataRata</code>. Inilah alasan utama mengapa kita butuh menyimpan data di <strong>array</strong>: karena kita harus membaca ulang data suhu tersebut setelah nilai rata-ratanya diketahui!</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int suhu[100];
+    int total = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; suhu[i];
+        total = total + suhu[i];
+    }
+
+    double rataRata = (double)total / n;
+
+    int diAtasRata = 0;
+    for (int i = 0; i &lt; n; i++) {
+        if (suhu[i] &gt; rataRata) {
+            diAtasRata++;
+        }
+    }
+
+    cout &lt;&lt; &quot;Rata-rata suhu: &quot; &lt;&lt; rataRata &lt;&lt; endl;
+    cout &lt;&lt; &quot;Hari di atas rata-rata: &quot; &lt;&lt; diAtasRata &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 5 (Sensor Pembersih Data Negatif)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Simpan input ke dalam array <code>arr</code>.</li>
+<li>Gunakan loop <code>for</code> untuk memeriksa setiap elemen. Jika <code>arr[i] < 0</code>, ubah nilainya menjadi <code>0</code>.</li>
+<li>Tampilkan isi array yang telah diperbarui.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] &lt; 0) {
+            arr[i] = 0;
+        }
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

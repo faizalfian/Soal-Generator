@@ -1,0 +1,205 @@
+{
+  "last_updated": "2026-10-29T04:54:15+07:00",
+  "total_batches": 18,
+  "portal_path": "index.html",
+  "records": [
+    {
+      "id": "SOAL-20261028-001",
+      "path": "outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-for-loop",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 11,
+      "created_at": "2026-10-28T09:31:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-002",
+      "path": "outputs/pemrograman/cpp/variabel-dan-percabangan/20261028_variabel-dan-percabangan_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "variabel-dan-percabangan",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:05:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-003",
+      "path": "outputs/pemrograman/cpp/perulangan-while-for/20261028_perulangan-while-for_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "perulangan-while-for",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:06:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-004",
+      "path": "outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_02.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-for-loop",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:07:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-005",
+      "path": "outputs/pemrograman/cpp/array-1d-perbandingan/20261028_array-1d-perbandingan_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-perbandingan",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:08:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-006",
+      "path": "outputs/pemrograman/cpp/searching-dan-sorting/20261028_searching-dan-sorting_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "searching-dan-sorting",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:09:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-007",
+      "path": "outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "problem-solving-dekomposisi",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:25:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-008",
+      "path": "outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_02.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "problem-solving-dekomposisi",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:27:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-009",
+      "path": "outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "problem-solving-dekomposisi",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:32:00+07:00"
+    },
+    {
+      "id": "SOAL-20261028-010",
+      "path": "outputs/pemrograman/cpp/problem-solving-dekomposisi/20261028_problem-solving-dekomposisi_coding-challenge_beginner_02.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "problem-solving-dekomposisi",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-28T10:32:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-001",
+      "path": "outputs/pemrograman/cpp/pemanasan-array-1d/20261029_pemanasan-array-1d_coding-challenge_beginner_01.md",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "pemanasan-array-1d",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 10,
+      "created_at": "2026-10-29T04:40:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-002",
+      "path": "outputs/pemrograman/cpp/pemanasan-array-1d/20261029_pemanasan-array-1d_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "pemanasan-array-1d",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 10,
+      "created_at": "2026-10-29T04:41:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-003",
+      "path": "outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-for-loop",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 11,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-004",
+      "path": "outputs/pemrograman/cpp/variabel-dan-percabangan/20261028_variabel-dan-percabangan_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "variabel-dan-percabangan",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-005",
+      "path": "outputs/pemrograman/cpp/perulangan-while-for/20261028_perulangan-while-for_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "perulangan-while-for",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-006",
+      "path": "outputs/pemrograman/cpp/array-1d-for-loop/20261028_array-1d-for-loop_coding-challenge_beginner_02.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-for-loop",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-007",
+      "path": "outputs/pemrograman/cpp/array-1d-perbandingan/20261028_array-1d-perbandingan_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "array-1d-perbandingan",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    },
+    {
+      "id": "SOAL-20261029-008",
+      "path": "outputs/pemrograman/cpp/searching-dan-sorting/20261028_searching-dan-sorting_coding-challenge_beginner_01.html",
+      "kategori": "pemrograman",
+      "subjek": "cpp",
+      "materi": "searching-dan-sorting",
+      "tingkat": "beginner",
+      "tipe": "coding-challenge",
+      "jumlah_soal": 5,
+      "created_at": "2026-10-29T04:52:00+07:00"
+    }
+  ]
+}

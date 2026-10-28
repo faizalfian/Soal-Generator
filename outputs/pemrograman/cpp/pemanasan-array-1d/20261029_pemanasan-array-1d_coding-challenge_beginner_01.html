@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemanasan Array 1D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261029-001</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">10 SOAL</span>
+                </div>
+                <h1 class="header-title">Paket Pemanasan Kilat: 10 Soal Isolasi Konsep Array 1D (C++)</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<p><strong>Panduan Sesi Pemanasan (JP 1–2):</strong></p>
+<ol>
+<li>Setiap soal hanya menguji <strong>satu keterampilan mikro</strong> (topik terisolasi), tidak ada logika campuran atau jebakan rumit.</li>
+<li>Kerjakan secara berurutan dari Soal 1 sampai Soal 10 untuk membangun <em>muscle memory</em> (kebiasaan mengetik dan memikirkan indeks).</li>
+<li>Seluruh program cukup diselesaikan di dalam fungsi <code>int main()</code>.</li>
+</ol>
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 1: Akses Indeks & Penelusuran Dasar</div></div>
+<div class="card"><div class="card-header"><h2>Soal 1: Dua Ujung Array (Akses Indeks 0 dan N-1)</h2></div>
+<p><strong>Fokus Topik:</strong> Mengakses elemen paling awal dan paling akhir tanpa loop.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berisi <span class="var-math">N</span> buah bilangan bulat. Tampilkan nilai elemen <strong>paling pertama</strong> (indeks ke-0) dan elemen <strong>paling terakhir</strong> (indeks ke-(N-1)) yang dipisahkan oleh spasi!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat elemen array.</li>
+<li>Output berupa dua angka: elemen pertama dan elemen terakhir dipisahkan spasi.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-1000 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 30 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 50</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+7 99 15</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">7 15</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+42</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">42 42</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Kamu tidak butuh loop untuk mencetak! Cukup gunakan <code>cout << arr[0] << " " << arr[n - 1] << endl;</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 2: Cetak Barisan Horizontal (Loop Maju Dasar)</h2></div>
+<p><strong>Fokus Topik:</strong> Menelusuri seluruh elemen array dari awal hingga akhir dengan <code>for</code> loop.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berukuran <span class="var-math">N</span>. Tampilkan kembali seluruh isi array tersebut dalam satu baris, di mana setiap angka dipisahkan oleh satu tanda spasi!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa <span class="var-math">N</span> bilangan bulat dalam satu baris dipisahkan spasi.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-1000 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+5 8 2 9</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">5 8 2 9</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+100 200 300</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">100 200 300</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+-10</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">-10</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Gunakan <code>for (int i = 0; i < n; i++)</code> dan cetak <code>arr[i] << " "</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 3: Label Urutan Manusiawi (Indeks vs Nomor Urut)</h2></div>
+<p><strong>Fokus Topik:</strong> Membedakan indeks array komputer (mulai dari 0) dengan nomor urut manusia (mulai dari 1).</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan <span class="var-math">N</span> nama kode nilai. Tampilkan setiap elemen array baris demi baris dengan format: <code>Data ke-<nomor>: <nilai></code>, di mana <code><nomor></code> dimulai dari angka <code>1</code> hingga <span class="var-math">N</span>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output terdiri dari <span class="var-math">N</span> baris dengan format yang ditentukan.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 50</li>
+<li>0 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+85 90 78</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Data ke-1: 85
+Data ke-2: 90
+Data ke-3: 78</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">2
+10 20</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Data ke-1: 10
+Data ke-2: 20</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+500</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Data ke-1: 500</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Nilai elemen berada di <code>arr[i]</code>, sedangkan label nomor urut yang dicetak adalah <code>i + 1</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 4: Menampilkan Mundur (Loop Terbalik)</h2></div>
+<p><strong>Fokus Topik:</strong> Melatih perulangan <code>for</code> mundur dengan syarat <code>i >= 0</code> dan <code>i--</code>.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berukuran <span class="var-math">N</span>. Tampilkan isi array dari elemen paling belakang menuju elemen paling depan dalam satu baris dipisahkan spasi!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa barisan angka yang urutannya terbalik dari input.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-1000 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+1 2 3 4</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">4 3 2 1</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+10 50 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">30 50 10</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">2
+99 88</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">88 99</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Loop dimulai dari <code>int i = n - 1;</code>, berjalan selama <code>i >= 0;</code>, dan di setiap iterasi kurangi nilai dengan <code>i--</code>.</p></div>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 2: Isolasi Manipulasi Indeks & Filter Kondisi</div></div>
+<div class="card"><div class="card-header"><h2>Soal 5: Cetak Elemen pada Indeks Genap Saja</h2></div>
+<p><strong>Fokus Topik:</strong> Mengisolasi operasi pada nomor <strong>indeks (<code>i</code>)</strong>, bukan pada nilai elemen.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berukuran <span class="var-math">N</span>. Tampilkan hanya elemen-elemen yang berada pada <strong>nomor indeks genap</strong> (indeks <code>0</code>, <code>2</code>, <code>4</code>, dst.) secara berurutan dipisahkan spasi!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa barisan elemen pada indeks genap.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>0 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 30 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 30 50</code></pre>
+<p><em>(Penjelasan: arr[0]=10, arr[2]=30, arr[4]=50).</em></p>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+7 14 21 28</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">7 21</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+99</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">99</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Kamu bisa menggunakan lompatan <code>for (int i = 0; i < n; i += 2)</code> atau menggunakan <code>if (i % 2 == 0)</code>. Ingat: yang dicek adalah <code>i</code>, BUKAN <code>arr[i]</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 6: Filter Nilai Positif (Isolasi Nilai Elemen)</h2></div>
+<p><strong>Fokus Topik:</strong> Mengisolasi operasi pada <strong>nilai elemen (<code>arr[i]</code>)</strong>, bukan pada nomor indeks.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berisi <span class="var-math">N</span> bilangan bulat (yang mungkin mengandung angka positif, negatif, atau nol). Tampilkan <strong>hanya angka-angka yang bernilai positif murni (<span class="math-badge">&gt; 0</span>)</strong> dipisahkan spasi! (Jika tidak ada angka positif, jangan cetak angka apa pun).</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa angka-angka positif dalam satu baris.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-1000 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+12 -5 0 25 -8 7</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">12 25 7</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+-10 -20 -30 0</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text"></code></pre>
+<p><em>(Output kosong karena tidak ada angka > 0)</em></p>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+5 10 15</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">5 10 15</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Periksa isi kotaknya: <code>if (arr[i] > 0)</code> lalu cetak <code>arr[i] << " "</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 7: Penghitung Kelipatan 5 (Variabel Counter Sederhana)</h2></div>
+<p><strong>Fokus Topik:</strong> Menggunakan variabel pencatat/penghitung (<em>counter</em>) di luar loop.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan array berukuran <span class="var-math">N</span>. Hitunglah <strong>ada berapa banyak bilangan</strong> di dalam array tersebut yang merupakan <strong>kelipatan 5</strong> (habis dibagi 5)!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat positif.</li>
+<li>Output menampilkan jumlah angka kelipatan 5.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>1 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+10 7 25 14 30 18</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Banyak kelipatan 5: 3</code></pre>
+<p><em>(Penjelasan: Angka 10, 25, dan 30 adalah kelipatan 5).</em></p>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+3 7 11 13</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Banyak kelipatan 5: 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+5 50 500</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Banyak kelipatan 5: 3</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Siapkan <code>int hitung = 0;</code> sebelum loop. Di dalam loop, jika <code>arr[i] % 5 == 0</code>, tambahkan <code>hitung++;</code>. Cetak <code>hitung</code> setelah loop selesai.</p></div>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 3: Operasi Aritmatika & Mutasi Data</div></div>
+<div class="card"><div class="card-header"><h2>Soal 8: Cetak Nilai Berlipat Ganda</h2></div>
+<p><strong>Fokus Topik:</strong> Melakukan operasi aritmatika pada saat menampilkan elemen tanpa merusak array aslinya.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan array berukuran <span class="var-math">N</span>. Tampilkan setiap elemen array yang nilainya telah <strong>dikalikan dengan 2</strong> (<span class="math-badge">arr[i] &times; 2</span>) dalam satu baris dipisahkan spasi!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa nilai-nilai elemen setelah dikalikan 2.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-500 &le; arr[i] &le; 500</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+3 7 10 15</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">6 14 20 30</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+-4 0 8</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">-8 0 16</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+25</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">50</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Di dalam loop cukup cetak <code>cout << arr[i] * 2 << " ";</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 9: Akumulator Penjumlahan Sederhana (Sum)</h2></div>
+<p><strong>Fokus Topik:</strong> Menggunakan variabel penampung (<em>accumulator</em>) untuk menghitung total seluruh elemen.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berukuran <span class="var-math">N</span>. Hitung dan tampilkan <strong>jumlah total (sum)</strong> dari seluruh angka yang ada di dalam array tersebut!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa satu angka hasil penjumlahan total seluruh elemen.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>0 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+10 20 30 40</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 100</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+5 5 5 5 5</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 25</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+99</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 99</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Siapkan <code>int total = 0;</code> di LUAR sebelum loop. Di setiap putaran loop, lakukan <code>total = total + arr[i];</code>. Cetak <code>total</code> setelah loop selesai.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 10: Penggantian Angka Nol Menjadi -1 (Mutasi Nilai di Memori)</h2></div>
+<p><strong>Fokus Topik:</strong> Mengubah isi kotak array di memori (<em>in-place update</em>) sebelum dicetak.</p>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan array berukuran <span class="var-math">N</span>. Lakukan pemeriksaan pada seluruh elemen: jika ada elemen yang bernilai <strong><code>0</code></strong>, ubahlah nilai elemen tersebut menjadi <strong><code>-1</code></strong> di dalam array! Setelah semua elemen diperiksa dan diubah, tampilkan seluruh isi array yang sudah diperbarui.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa barisan elemen array setelah nilai <code>0</code> diganti menjadi <code>-1</code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li>1 &le; N &le; 100</li>
+<li>-1000 &le; arr[i] &le; 1000</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+4 0 8 0 12</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">4 -1 8 -1 12</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+0 0 0</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">-1 -1 -1</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+10 20 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 20 30</code></pre>
+<div class="callout"><p><strong>Petunjuk Fokus:</strong></p></div>
+<div class="callout"><p>Gunakan <code>if (arr[i] == 0) { arr[i] = -1; }</code> untuk menimpa nilai lama di dalam array. Setelah itu, buat loop untuk mencetak array yang baru.</p></div>
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Panduan Pengajar: Kunci Jawaban Lengkap (Paket Pemanasan)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 1 (Dua Ujung Array)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Elemen pertama di indeks 0, elemen terakhir di indeks n - 1
+    cout &lt;&lt; arr[0] &lt;&lt; &quot; &quot; &lt;&lt; arr[n - 1] &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 2 (Cetak Barisan Horizontal)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Loop maju dari indeks 0 sampai n - 1
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 3 (Label Urutan Manusiawi)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Indeks komputer i, nomor urut manusia i + 1
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; &quot;Data ke-&quot; &lt;&lt; (i + 1) &lt;&lt; &quot;: &quot; &lt;&lt; arr[i] &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 4 (Menampilkan Mundur)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Loop mundur dari n - 1 turun ke 0
+    for (int i = n - 1; i &gt;= 0; i--) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 5 (Cetak Indeks Genap Saja)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Melompat 2 langkah (indeks 0, 2, 4, ...)
+    for (int i = 0; i &lt; n; i += 2) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 6 (Filter Nilai Positif)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] &gt; 0) {
+            cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 7 (Penghitung Kelipatan 5)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int hitung = 0;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] % 5 == 0) {
+            hitung++;
+        }
+    }
+
+    cout &lt;&lt; &quot;Banyak kelipatan 5: &quot; &lt;&lt; hitung &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 8 (Cetak Nilai Berlipat Ganda)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; (arr[i] * 2) &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 9 (Akumulator Penjumlahan Sederhana)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int total = 0;
+    for (int i = 0; i &lt; n; i++) {
+        total = total + arr[i];
+    }
+
+    cout &lt;&lt; &quot;Total: &quot; &lt;&lt; total &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 10 (Penggantian Angka Nol Menjadi -1)</h2></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Tahap 1: Mutasi / timpa nilai di memori
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] == 0) {
+            arr[i] = -1;
+        }
+    }
+
+    // Tahap 2: Cetak hasil akhir
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variabel Dan Percabangan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261028-002</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">5 SOAL</span>
+                </div>
+                <h1 class="header-title">Bank Soal Latihan Mandiri di Rumah — Paket 01</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<p><strong>Topik:</strong> Variabel, Operator Aritmatika (<code>/</code>, <code>%</code>), dan Logika Percabangan (<code>if-else</code>)</p>
+<p><strong>Estimasi Waktu:</strong> 20–30 Menit</p>
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN A: Tebak Output & Tabel Tracing (Tanpa Komputer)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 1: Melacak Perubahan Nilai Variabel (Variable Mutation)</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Perhatikan potongan kode C++ di bawah ini. Lacaklah perubahan nilai variabel <code>a</code>, <code>b</code>, dan <code>c</code> baris demi baris dengan mengisi tabel di bawahnya, lalu tuliskan apa output yang muncul di layar!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a = 12;
+    int b = 5;
+    int c = a / b;       // Baris 1
+    int d = a % b;       // Baris 2
+    a = b + c;           // Baris 3
+    b = a - d;           // Baris 4
+    c = a * d;           // Baris 5
+
+    cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; endl;
+    return 0;
+}</code></pre>
+<p><strong>Tabel Tracing (Isilah titik-titik berikut):</strong></p>
+<table><thead><tr>
+<th>Langkah</th>
+<th>nilai <code>a</code></th>
+<th>nilai <code>b</code></th>
+<th>nilai <code>c</code></th>
+<th>nilai <code>d</code></th>
+</tr></thead><tbody>
+<tr>
+<td>Awal</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td><code>?</code></td>
+<td><code>?</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 1 (<code>c = a / b</code>)</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td>...</td>
+<td><code>?</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 2 (<code>d = a % b</code>)</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Setelah Baris 3 (<code>a = b + c</code>)</td>
+<td>...</td>
+<td><code>5</code></td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Setelah Baris 4 (<code>b = a - d</code>)</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td>Setelah Baris 5 (<code>c = a * d</code>)</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody></table>
+<p><strong>Tebakan Output Akhir:</strong> <code>... ... ... ...</code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 2: Menebak Jalur Logika Majemuk (<code>&&</code> dan <code>||</code>)</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Perhatikan program di bawah ini. Tentukan <strong>output</strong> yang dicetak ke layar untuk <strong>3 skenario input</strong> yang berbeda!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int nilai, kehadiran;
+    cin &gt;&gt; nilai &gt;&gt; kehadiran;
+
+    if (nilai &gt;= 80 &amp;&amp; kehadiran &gt;= 90) {
+        cout &lt;&lt; &quot;LULUS ISTIMEWA&quot; &lt;&lt; endl;
+    } else if (nilai &gt;= 75 || kehadiran == 100) {
+        if (nilai &lt; 60) {
+            cout &lt;&lt; &quot;UJIAN ULANG&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; &quot;LULUS BERSYARAT&quot; &lt;&lt; endl;
+        }
+    } else {
+        cout &lt;&lt; &quot;TIDAK LULUS&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+<p><strong>Pertanyaan:</strong></p>
+<ol>
+<li>Jika input adalah <code>85 85</code>, apa outputnya? Mengapa tidak masuk ke <code>"LULUS ISTIMEWA"</code>?</li>
+<li>Jika input adalah <code>55 100</code>, apa outputnya?</li>
+<li>Jika input adalah <code>70 80</code>, apa outputnya?</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN B: Detektif Bug (Analisis & Perbaikan Kode)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 3: Bug Penentuan Predikat Nilai Ujian</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Seorang siswa membuat program untuk mengubah nilai angka (0–100) menjadi nilai huruf dengan aturan:</p>
+<ul>
+<li>Nilai <span class="math-badge">&ge; 85</span>: Grade <code>A</code></li>
+<li>Nilai <span class="math-badge">&ge; 70</span> s/d <span class="var-math">84</span>: Grade <code>B</code></li>
+<li>Nilai <span class="math-badge">&ge; 55</span> s/d <span class="var-math">69</span>: Grade <code>C</code></li>
+<li>Nilai <span class="math-badge">&lt; 55</span>: Grade <code>D</code></li>
+</ul>
+<p>Namun, ketika diuji dengan nilai <code>90</code>, programnya malah mencetak <strong><code>C</code></strong>! Berikut kode yang dibuat siswa tersebut:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int skor;
+    cin &gt;&gt; skor;
+
+    // KODE YANG BERMASALAH (BUGGY):
+    if (skor &gt;= 55) {
+        cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+    } else if (skor &gt;= 70) {
+        cout &lt;&lt; &quot;B&quot; &lt;&lt; endl;
+    } else if (skor &gt;= 85) {
+        cout &lt;&lt; &quot;A&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;D&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+<p><strong>Tugasmu:</strong></p>
+<ol>
+<li>Jelaskan mengapa saat diberi input <code>90</code>, program langsung mencetak <code>"C"</code> dan mengabaikan kondisi di bawahnya!</li>
+<li>Tuliskan ulang bagian blok <code>if - else if - else</code> tersebut agar berjalan dengan benar!</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN C: Tantangan Koding Kontekstual</div></div>
+<div class="card"><div class="card-header"><h2>Soal 4: Konversi Detik ke Jam, Menit, dan Detik</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Sebuah stopwatch mencatat durasi lari maraton dalam satuan <strong>total detik</strong> (misalnya <code>3665</code> detik). Buatlah program yang menerima satu bilangan bulat berupa total detik, lalu mengubahnya menjadi format <strong>Jam, Menit, dan Sisa Detik</strong>!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Input berupa satu bilangan bulat <code>totalDetik</code>.</li>
+<li>Output berupa format <code><jam> jam <menit> menit <detik> detik</code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">0 &le; totalDetik &le; 86400</span></li>
+<li>1 Jam = 3600 Detik, 1 Menit = 60 Detik.</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input: <code>3665</code></li>
+<li>Output: <code>1 jam 1 menit 5 detik</code></li>
+<li><strong>Test Case 2:</strong></li>
+<li>Input: <code>7320</code></li>
+<li>Output: <code>2 jam 2 menit 0 detik</code></li>
+<li><strong>Test Case 3:</strong></li>
+<li>Input: <code>45</code></li>
+<li>Output: <code>0 jam 0 menit 45 detik</code></li>
+</ul>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>- Gunakan pembagian bulat <code>/</code> untuk mendapatkan jumlah jam: <code>jam = totalDetik / 3600;</code></p></div>
+<div class="callout"><p>- Gunakan operator sisa bagi <code>%</code> untuk mendapatkan sisa detik yang belum jadi jam: <code>sisa = totalDetik % 3600;</code></p></div>
+<div class="callout"><p>- Dari <code>sisa</code> tersebut, bagi dengan <code>60</code> untuk mendapat menit, dan <code>% 60</code> untuk mendapat detik akhirnya!</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 5: Kasir Toko Buku & Diskon Bertingkat</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Sebuah toko buku mengadakan promo diskon berdasarkan total belanja pembeli:</p>
+<ul>
+<li>Jika total belanja <strong>minimal Rp 200.000</strong>, mendapat potongan diskon <strong>Rp 30.000</strong>.</li>
+<li>Jika total belanja <strong>minimal Rp 100.000</strong> (tapi di bawah Rp 200.000), mendapat potongan diskon <strong>Rp 10.000</strong>.</li>
+<li>Jika di bawah Rp 100.000, tidak mendapat diskon (<strong>Rp 0</strong>).</li>
+</ul>
+<p>Buatlah program yang menerima nominal total belanja, kemudian menampilkan <strong>Besar Diskon</strong> dan <strong>Total yang Harus Dibayar</strong>!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Input berupa satu bilangan bulat <code>belanja</code>.</li>
+<li>Output terdiri dari 2 baris: baris pertama nominal diskon, baris kedua nominal akhir yang harus dibayar.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1000 &le; belanja &le; 10000000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input: <code>250000</code></li>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Diskon: 30000
+Total Bayar: 220000</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input: <code>120000</code></li>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Diskon: 10000
+Total Bayar: 110000</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input: <code>75000</code></li>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Diskon: 0
+Total Bayar: 75000</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Buat variabel <code>int diskon = 0;</code>. Periksa mulai dari syarat nominal paling tinggi (<code>belanja >= 200000</code>), baru turun ke <code>else if (belanja >= 100000)</code>. Setelah blok <code>if</code> selesai, hitung <code>bayar = belanja - diskon</code>.</p></div>
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Kunci Jawaban & Pembahasan (Paket 01)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 1 (Tracing Variabel)</h2></div>
+<ol>
+<li><strong>Baris 1 (<code>c = a / b</code>):</strong> Karena <code>a</code> dan <code>b</code> bertipe <code>int</code>, pembagian <code>12 / 5</code> menghasilkan bilangan bulat <code>2</code> (desimalnya dibuang).</li>
+<li><strong>Baris 2 (<code>d = a % b</code>):</strong> Sisa bagi <code>12</code> dibagi <code>5</code> adalah <code>2</code> (karena <span class="math-badge">5 &times; 2 = 10</span>, sisanya <span class="math-badge">12 - 10 = 2</span>).</li>
+<li><strong>Baris 3 (<code>a = b + c</code>):</strong> Nilai <code>a</code> ditimpa menjadi <code>5 + 2 = 7</code>.</li>
+<li><strong>Baris 4 (<code>b = a - d</code>):</strong> Gunakan nilai <code>a</code> yang <strong>terbaru</strong> (<code>7</code>), sehingga <code>b = 7 - 2 = 5</code>.</li>
+<li><strong>Baris 5 (<code>c = a <em> d</code>):</strong> <code>c = 7 </em> 2 = 14</code>.</li>
+</ol>
+<table><thead><tr>
+<th>Langkah</th>
+<th>nilai <code>a</code></th>
+<th>nilai <code>b</code></th>
+<th>nilai <code>c</code></th>
+<th>nilai <code>d</code></th>
+</tr></thead><tbody>
+<tr>
+<td>Awal</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td><code>?</code></td>
+<td><code>?</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 1</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td><code>2</code></td>
+<td><code>?</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 2</td>
+<td><code>12</code></td>
+<td><code>5</code></td>
+<td><code>2</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 3</td>
+<td><code>7</code></td>
+<td><code>5</code></td>
+<td><code>2</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 4</td>
+<td><code>7</code></td>
+<td><code>5</code></td>
+<td><code>2</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>Setelah Baris 5</td>
+<td><code>7</code></td>
+<td><code>5</code></td>
+<td><code>14</code></td>
+<td><code>2</code></td>
+</tr>
+</tbody></table>
+<p><strong>Output Akhir:</strong> <code>7 5 14 2</code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 2 (Tracing Logika <code>&&</code> dan <code>||</code>)</h2></div>
+<ol>
+<li><strong>Input <code>85 85</code>:</strong> Outputnya adalah <strong><code>LULUS BERSYARAT</code></strong>.</li>
+</ol>
+<p><em>Penjelasan:</em> Kondisi pertama <code>nilai >= 80 && kehadiran >= 90</code> bernilai <strong>SALAH (False)</strong> karena operator <code>&&</code> (DAN) mewajibkan kedua syarat terpenuhi, sedangkan kehadiran hanya <code>85</code> (<span class="math-badge">&lt; 90</span>). Program lanjut ke <code>else if (nilai >= 75 || kehadiran == 100)</code> yang bernilai <strong>BENAR</strong> karena <code>85 >= 75</code>. Karena nilai tidak kurang dari 60, tercetak <code>"LULUS BERSYARAT"</code>.</p>
+<ol>
+<li><strong>Input <code>55 100</code>:</strong> Outputnya adalah <strong><code>UJIAN ULANG</code></strong>.</li>
+</ol>
+<p><em>Penjelasan:</em> Kondisi pertama gagal. Kondisi <code>else if</code> terpenuhi karena <code>kehadiran == 100</code> (operator <code>||</code> / ATAU cukup salah satu benar). Namun di dalamnya terdapat pengecekan <code>if (nilai < 60)</code> yang bernilai benar (<code>55 < 60</code>), sehingga mencetak <code>"UJIAN ULANG"</code>.</p>
+<ol>
+<li><strong>Input <code>70 80</code>:</strong> Outputnya adalah <strong><code>TIDAK LULUS</code></strong>.</li>
+</ol>
+<p><em>Penjelasan:</em> Kedua kondisi <code>if</code> dan <code>else if</code> gagal, sehingga jatuh ke blok <code>else</code>.</p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 3 (Detektif Bug)</h2></div>
+<ol>
+<li><strong>Penyebab Bug:</strong> Rangkaian <code>if - else if</code> dieksekusi dari <strong>atas ke bawah</strong> dan akan langsung berhenti pada cabang pertama yang bernilai benar. Karena <code>skor >= 55</code> ditaruh paling atas, angka <code>90</code> jelas lebih besar dari <code>55</code>, sehingga cabang pertama langsung dijalankan dan cabang di bawahnya (<code>>= 70</code>, <code>>= 85</code>) tidak pernah diperiksa.</li>
+<li><strong>Kode Perbaikan:</strong> Urutkan pengecekan dari batas paling tinggi ke paling rendah:</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int skor;
+    cin &gt;&gt; skor;
+
+    if (skor &gt;= 85) {
+        cout &lt;&lt; &quot;A&quot; &lt;&lt; endl;
+    } else if (skor &gt;= 70) {
+        cout &lt;&lt; &quot;B&quot; &lt;&lt; endl;
+    } else if (skor &gt;= 55) {
+        cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;D&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 4 (Konversi Detik)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Bagi <code>totalDetik</code> dengan <code>3600</code> untuk mendapatkan jumlah jam utuh.</li>
+<li>Ambil sisa detiknya dengan <code>totalDetik % 3600</code>.</li>
+<li>Bagi sisa detik tersebut dengan <code>60</code> untuk mendapatkan menit, dan ambil sisanya terhadap <code>60</code> untuk mendapatkan detik terakhir.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int totalDetik;
+    cin &gt;&gt; totalDetik;
+
+    int jam = totalDetik / 3600;
+    int sisaDetik = totalDetik % 3600;
+    int menit = sisaDetik / 60;
+    int detik = sisaDetik % 60;
+
+    cout &lt;&lt; jam &lt;&lt; &quot; jam &quot; &lt;&lt; menit &lt;&lt; &quot; menit &quot; &lt;&lt; detik &lt;&lt; &quot; detik&quot; &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 5 (Kasir Toko Buku)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Siapkan variabel <code>diskon = 0</code>.</li>
+<li>Gunakan <code>if (belanja >= 200000)</code> terlebih dahulu agar belanja di atas Rp 200.000 mendapatkan diskon tertinggi.</li>
+<li>Kurangi <code>belanja</code> dengan <code>diskon</code> dan tampilkan hasilnya.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int belanja;
+    cin &gt;&gt; belanja;
+
+    int diskon = 0;
+    if (belanja &gt;= 200000) {
+        diskon = 30000;
+    } else if (belanja &gt;= 100000) {
+        diskon = 10000;
+    } else {
+        diskon = 0;
+    }
+
+    int totalBayar = belanja - diskon;
+
+    cout &lt;&lt; &quot;Diskon: &quot; &lt;&lt; diskon &lt;&lt; endl;
+    cout &lt;&lt; &quot;Total Bayar: &quot; &lt;&lt; totalBayar &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

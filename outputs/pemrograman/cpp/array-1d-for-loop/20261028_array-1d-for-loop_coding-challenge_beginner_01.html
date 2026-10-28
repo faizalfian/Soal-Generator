@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array 1D For Loop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261028-001</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">11 SOAL</span>
+                </div>
+                <h1 class="header-title">Modul Latihan Mandiri: Pemrograman Dasar C++ (Array 1 Dimensi & For Loop)</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<p><strong>Aturan Pengerjaan untuk Siswa:</strong></p>
+<ol>
+<li>Kerjakan seluruh soal secara berurutan dari <strong>Bagian 1</strong> hingga <strong>Bagian 4</strong> menggunakan komputer masing-masing.</li>
+<li>Seluruh kode cukup ditulis di dalam fungsi <code>int main()</code>.</li>
+<li>Gunakan deklarasi <em>C-style array</em> (contoh: <code>int arr[100];</code> atau <code>int arr[n];</code>).</li>
+<li>Perhatikan perbedaan antara <strong>indeks elemen (<code>i</code>)</strong> dan <strong>nilai/isi elemen (<code>arr[i]</code>)</strong>.</li>
+</ol>
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 1: Pemanasan & Pemantapan Indeks vs Nilai</div></div>
+<div class="card"><div class="card-header"><h2>Soal 1: Cetak Array secara Terbalik (Reverse Print)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Buatlah program yang menerima sejumlah <span class="var-math">N</span> bilangan bulat ke dalam sebuah array, kemudian menampilkan kembali seluruh elemen array tersebut mulai dari <strong>elemen paling belakang (indeks terakhir)</strong> menuju <strong>elemen paling depan (indeks ke-0)</strong>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span> (banyaknya elemen).</li>
+<li>Baris kedua berisi <span class="var-math">N</span> buah bilangan bulat yang dipisahkan spasi.</li>
+<li>Output berupa barisan angka yang dicetak terbalik, dipisahkan oleh spasi.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 30 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">50 40 30 20 10</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+7 3 9 1</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">1 9 3 7</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">1
+99</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">99</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Ingat bahwa array dengan panjang <span class="var-math">N</span> memiliki indeks dari <code>0</code> sampai <code>N - 1</code>. Untuk mencetak mundur, mulailah perulangan <code>for</code> dari <code>i = n - 1</code>, dengan syarat berhenti <code>i >= 0</code>, dan lakukan pengurangan <code>i--</code> di setiap langkah.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 2: Filter Nilai Genap dan Ganjil (Nilai vs Indeks)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Pada latihan sebelumnya kamu telah memisahkan elemen berdasarkan <em>indeks</em> genap dan ganjil. Kali ini, pisahkan elemen array berdasarkan <strong>ISI/NILAI angkanya</strong>! Tampilkan baris pertama berisi angka-angka yang <strong>bernilai genap</strong>, dan baris kedua berisi angka-angka yang <strong>bernilai ganjil</strong>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> buah bilangan bulat positif.</li>
+<li>Output terdiri dari 2 baris: baris pertama untuk nilai genap, baris kedua untuk nilai ganjil.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">1 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+15 8 22 7 10 3</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Genap: 8 22 10
+Nilai Ganjil: 15 7 3</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+1 3 5 7 9</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Genap: 
+Nilai Ganjil: 1 3 5 7 9</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+2 4 6 8</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Genap: 2 4 6 8
+Nilai Ganjil:</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Jangan mengecek <code>i % 2 == 0</code> (itu mengecek nomor indeks). Ceklah isi kotaknya menggunakan <code>if (arr[i] % 2 == 0)</code>. Gunakan dua buah <code>for</code> loop terpisah: loop pertama untuk mencetak yang bernilai genap, dan loop kedua untuk mencetak yang bernilai ganjil.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 3: Penghitung Siswa yang Lulus KKM (Counting)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Seorang guru memiliki daftar nilai ujian dari <span class="var-math">N</span> siswa. Kriteria Ketuntasan Minimal (KKM) adalah <strong>75</strong>. Buatlah program untuk menghitung <strong>berapa banyak siswa</strong> yang berhasil lulus (mendapat nilai <span class="math-badge">&ge; 75</span>) dan berapa banyak siswa yang harus mengikuti remedial (nilai <span class="math-badge">&lt; 75</span>).</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi jumlah siswa <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> nilai ujian siswa.</li>
+<li>Output menampilkan jumlah siswa lulus dan jumlah siswa remedial.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">0 &le; nilai[i] &le; 100</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">7
+80 65 75 90 50 74 100</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lulus: 4
+Remedial: 3</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+75 80 85 90</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lulus: 4
+Remedial: 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+40 50 60</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lulus: 0
+Remedial: 3</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Buat dua variabel penghitung sebelum loop dimulai, yaitu <code>int lulus = 0;</code> dan <code>int remedial = 0;</code>. Di dalam loop <code>for</code>, periksa setiap <code>nilai[i]</code>. Jika <code>nilai[i] >= 75</code>, tambahkan <code>lulus++</code>, jika tidak, tambahkan <code>remedial++</code>.</p></div>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 2: Akumulasi & Pencarian Nilai Ekstremum</div></div>
+<div class="card"><div class="card-header"><h2>Soal 4: Total dan Rata-Rata Nilai Array</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berisi <span class="var-math">N</span> buah bilangan bulat. Hitunglah <strong>jumlah total (sum)</strong> dari seluruh elemen di dalam array tersebut beserta <strong>nilai rata-ratanya (average)</strong> dalam bentuk bilangan desimal (<code>float</code> / <code>double</code>).</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Baris pertama output adalah <code>Total: <hasil_total></code>, baris kedua adalah <code>Rata-rata: <hasil_rata_rata></code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">0 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 30 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 150
+Rata-rata: 30</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+10 15 20 22</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 67
+Rata-rata: 16.75</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+100 90 95</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Total: 285
+Rata-rata: 95</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Siapkan variabel <code>int total = 0;</code> di luar loop. Di setiap putaran loop, tambahkan isi elemen ke dalam total: <code>total = total + arr[i];</code>. Setelah loop selesai, hitung rata-rata dengan <code>(double)total / n</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 5: Mencari Nilai Tertinggi (Maximum)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berisi <span class="var-math">N</span> bilangan bulat. Temukan dan tampilkan <strong>angka terbesar (maksimum)</strong> yang ada di dalam array tersebut!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa satu angka terbesar di dalam array.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+12 45 7 89 34 23</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terbesar: 89</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+-10 -5 -20 -2 -50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terbesar: -2</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+50 50 50 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terbesar: 50</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Anggaplah elemen pertama sebagai nilai terbesar sementara: <code>int maks = arr[0];</code>. Kemudian buat loop dari <code>i = 1</code> hingga <code>n - 1</code>. Di dalam loop, bandingkan: jika <code>arr[i] > maks</code>, maka perbarui nilai <code>maks = arr[i];</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 6: Nilai Terkecil Beserta Posisi Indeksnya</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berisi <span class="var-math">N</span> bilangan bulat yang semuanya berbeda. Carilah <strong>nilai terkecil (minimum)</strong> di dalam array tersebut, sekaligus tampilkan <strong>pada indeks ke berapa</strong> nilai terkecil itu berada!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output menampilkan nilai terkecil dan indeks lokasinya (indeks dimulai dari 0).</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+40 15 80 10 25</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terkecil: 10
+Berada di indeks: 3</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+5 12 19 20</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terkecil: 5
+Berada di indeks: 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+90 70 50 30 20 10</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Nilai Terkecil: 10
+Berada di indeks: 5</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Selain menyimpan <code>int minVal = arr[0];</code>, buat juga variabel <code>int indeksMin = 0;</code>. Saat di dalam loop ditemukan <code>arr[i] < minVal</code>, perbarui kedua variabel tersebut: <code>minVal = arr[i];</code> dan <code>indeksMin = i;</code>.</p></div>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 3: Penerapan Pencarian Mandiri (Linear Search)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 7: Pencarian Angka Target (Linear Search Dasar)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array dengan <span class="var-math">N</span> elemen dan sebuah angka target <span class="var-math">X</span> yang ingin dicari. Periksalah satu per satu elemen array dari awal hingga akhir. Jika angka <span class="var-math">X</span> ditemukan, tampilkan indeks pertama tempat angka tersebut ditemukan. Jika sampai akhir array angka <span class="var-math">X</span> tidak ditemukan, tampilkan <code>"TIDAK DITEMUKAN"</code>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi jumlah elemen <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat elemen array.</li>
+<li>Baris ketiga berisi satu bilangan bulat <span class="var-math">X</span> (angka yang dicari).</li>
+<li>Output berupa indeks ditemukannya <span class="var-math">X</span>, atau pesan <code>"TIDAK DITEMUKAN"</code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i], X &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+14 28 9 35 42 19
+35</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Ditemukan pada indeks: 3</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 30 40 50
+99</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">TIDAK DITEMUKAN</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+7 12 7 19 7
+7</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Ditemukan pada indeks: 0</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Buat variabel penanda <code>int posisi = -1;</code> sebelum loop. Telusuri array dengan <code>for</code>. Jika <code>arr[i] == x</code>, simpan <code>posisi = i;</code> lalu hentikan loop dengan perintah <code>break;</code>. Setelah loop selesai, cek apakah <code>posisi != -1</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 8: Menghitung Frekuensi Kemunculan Angka</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Terkadang sebuah angka muncul lebih dari satu kali di dalam array. Buatlah program untuk menghitung <strong>berapa kali</strong> angka target <span class="var-math">X</span> muncul di dalam array berukuran <span class="var-math">N</span>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi jumlah elemen <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Baris ketiga berisi bilangan bulat <span class="var-math">X</span> yang ingin dihitung kemunculannya.</li>
+<li>Output berupa jumlah kemunculan angka <span class="var-math">X</span>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">1 &le; N &le; 100</span></li>
+<li><span class="math-badge">0 &le; arr[i], X &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">8
+5 2 8 5 9 5 1 5
+5</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Angka 5 muncul sebanyak 4 kali</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+1 2 3 4 5
+9</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Angka 9 muncul sebanyak 0 kali</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+7 7 7 7
+7</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Angka 7 muncul sebanyak 4 kali</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Sama seperti Linear Search, tetapi jangan gunakan <code>break</code>. Buat variabel <code>int frekuensi = 0;</code>. Setiap kali <code>arr[i] == x</code> bernilai benar, tambahkan <code>frekuensi++</code>.</p></div>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN 4: Jembatan Menuju Bubble Sort (Swapping & Perbandingan)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 9: Menukar Isi Dua Variabel (Konsep Dasar Swap)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Sebelum mengurutkan array, kita harus mahir menukar isi dua buah wadah/variabel. Buatlah program yang menerima dua bilangan bulat <code>A</code> dan <code>B</code>, menukar isi variabel <code>A</code> dan <code>B</code> menggunakan variabel bantuan <code>temp</code>, lalu mencetak nilai <code>A</code> dan <code>B</code> setelah ditukar!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Input terdiri dari dua bilangan bulat <code>A</code> dan <code>B</code>.</li>
+<li>Output menampilkan nilai <code>A</code> dan <code>B</code> sebelum dan sesudah ditukar.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">-1000 &le; A, B &le; 1000</span></li>
+<li>Wajib menukar isi variabel di memori menggunakan variabel ke-3 (<code>temp</code>), bukan sekadar membalik urutan <code>cout</code>.</li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">10 25</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Sebelum: A = 10, B = 25
+Sesudah: A = 25, B = 10</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">99 1</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Sebelum: A = 99, B = 1
+Sesudah: A = 1, B = 99</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">-5 5</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Sebelum: A = -5, B = 5
+Sesudah: A = 5, B = -5</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Bayangkan menukar air di gelas A dan gelas B. Kamu butuh gelas kosong C (<code>temp</code>):</p></div>
+<div class="callout"><p>1. Tuang A ke temp (<code>int temp = a;</code>)</p></div>
+<div class="callout"><p>2. Tuang B ke A (<code>a = b;</code>)</p></div>
+<div class="callout"><p>3. Tuang temp ke B (<code>b = temp;</code>)</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 10: Menukar Elemen Pertama dan Terakhir Array</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan sebuah array berukuran <span class="var-math">N</span>. Tukarlah isi elemen paling depan (<strong>indeks ke-0</strong>) dengan elemen paling belakang (<strong>indeks ke-(N-1)</strong>), kemudian cetak seluruh isi array setelah proses penukaran tersebut!</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa isi array setelah elemen pertama dan terakhirnya ditukar.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">2 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+90 20 30 40 10</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 20 30 40 90</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+1 2 3 4</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">4 2 3 1</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">2
+55 77</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">77 55</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Terapkan rumus swap dengan variabel <code>temp</code> pada <code>arr[0]</code> dan <code>arr[n - 1]</code>. Setelah ditukar, gunakan loop <code>for</code> dari <code>0</code> sampai <code>n - 1</code> untuk mencetak seluruh array.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 11: Satu Putaran Gelembung (1-Pass Bubble)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Ini adalah langkah inti dari algoritma <strong>Bubble Sort</strong>! Diberikan sebuah array berukuran <span class="var-math">N</span>. Lakukan <strong>satu kali perjalanan loop</strong> dari indeks <code>0</code> sampai <code>N - 2</code>. Pada setiap langkah <code>i</code>, bandingkan elemen <code>arr[i]</code> dengan elemen di sebelah kanannya yaitu <code>arr[i + 1]</code>.</p>
+<p>Jika <code>arr[i] > arr[i + 1]</code> (angka kiri lebih besar dari angka kanan), <strong>tukar posisi keduanya (swap)</strong>! Setelah satu kali loop selesai, cetak seluruh isi array dan amati di mana posisi angka terbesarnya sekarang.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa isi array setelah melalui 1 putaran penggeseran gelembung.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">2 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+50 10 40 20 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 40 20 30 50</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">6
+8 3 9 2 5 1</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">3 8 2 5 1 9</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+10 20 30 40</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">10 20 30 40</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Mengapa batas loop hanya <code>i < n - 1</code> (sampai indeks <code>n - 2</code>)? Karena di dalam loop kita mengakses <code>arr[i + 1]</code>. Jika <code>i</code> sampai <code>n - 1</code>, maka <code>arr[i + 1]</code> akan mengakses luar batas array (<em>out of bounds</em>).</p></div>
+<div class="callout"><p>Di dalam loop:</p></div>
+<p>></p>
+<pre><code class="language-cpp">&gt; if (arr[i] &gt; arr[i + 1]) {
+&gt;     int temp = arr[i];
+&gt;     arr[i] = arr[i + 1];
+&gt;     arr[i + 1] = temp;
+&gt; }
+&gt;</code></pre>
+<div class="callout"><p>Perhatikan bahwa setelah loop ini selesai, angka paling besar dijamin telah "mengapung" ke indeks paling ujung kanan (<code>arr[n - 1]</code>)!</p></div>
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Kunci Jawaban & Pembahasan (Pegangan Pengajar)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 1: Cetak Array secara Terbalik</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Baca ukuran array <code>n</code>, lalu baca tiap elemen dengan loop maju (<code>0</code> s/d <code>n - 1</code>).</li>
+<li>Gunakan loop kedua yang berjalan mundur dari indeks terakhir (<code>n - 1</code>) turun hingga indeks pertama (<code>0</code>).</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Loop mundur dari indeks terakhir (n - 1) ke 0
+    for (int i = n - 1; i &gt;= 0; i--) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 2: Filter Nilai Genap dan Ganjil</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Simpan seluruh input ke dalam <code>arr</code>.</li>
+<li>Untuk memfilter berdasarkan <strong>nilai</strong>, kita memeriksa sisa bagi elemen terhadap 2: <code>arr[i] % 2 == 0</code>.</li>
+<li>Lakukan loop pertama khusus mencetak yang genap, lalu loop kedua khusus mencetak yang ganjil.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    cout &lt;&lt; &quot;Nilai Genap: &quot;;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] % 2 == 0) {
+            cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;Nilai Ganjil: &quot;;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] % 2 != 0) {
+            cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+        }
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 3: Penghitung Siswa yang Lulus KKM</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Inisialisasi variabel <code>lulus = 0</code> dan <code>remedial = 0</code> sebelum perulangan dimulai.</li>
+<li>Telusuri setiap elemen array, gunakan percabangan <code>if-else</code> dengan batas nilai <code>75</code>.</li>
+<li>Cetak hasil penghitungan setelah loop berakhir.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int nilai[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; nilai[i];
+    }
+
+    int lulus = 0;
+    int remedial = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        if (nilai[i] &gt;= 75) {
+            lulus++;
+        } else {
+            remedial++;
+        }
+    }
+
+    cout &lt;&lt; &quot;Lulus: &quot; &lt;&lt; lulus &lt;&lt; endl;
+    cout &lt;&lt; &quot;Remedial: &quot; &lt;&lt; remedial &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 4: Total dan Rata-Rata Nilai Array</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Gunakan variabel akumulator <code>total = 0</code>.</li>
+<li>Tambahkan setiap elemen <code>arr[i]</code> ke variabel <code>total</code> di dalam loop.</li>
+<li>Lakukan <em>type casting</em> <code>(double)total / n</code> agar pembagian menghasilkan angka desimal yang akurat, bukan pembagian bilangan bulat.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int total = 0;
+    for (int i = 0; i &lt; n; i++) {
+        total = total + arr[i];
+    }
+
+    double rataRata = (double)total / n;
+
+    cout &lt;&lt; &quot;Total: &quot; &lt;&lt; total &lt;&lt; endl;
+    cout &lt;&lt; &quot;Rata-rata: &quot; &lt;&lt; rataRata &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 5: Mencari Nilai Tertinggi (Maximum)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Jangan menginisialisasi <code>maks = 0</code> karena jika semua isi array bernilai negatif, hasilnya akan salah. Inisialisasikan dengan elemen pertama: <code>int maks = arr[0];</code>.</li>
+<li>Bandingkan <code>maks</code> dengan elemen mulai dari indeks <code>1</code> hingga <code>n - 1</code>. Jika ditemukan elemen yang lebih besar, perbarui nilai <code>maks</code>.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int maks = arr[0];
+    for (int i = 1; i &lt; n; i++) {
+        if (arr[i] &gt; maks) {
+            maks = arr[i];
+        }
+    }
+
+    cout &lt;&lt; &quot;Nilai Terbesar: &quot; &lt;&lt; maks &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 6: Nilai Terkecil Beserta Posisi Indeksnya</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Simpan nilai awal <code>minVal = arr[0]</code> dan posisinya <code>indeksMin = 0</code>.</li>
+<li>Setiap kali kondisi <code>arr[i] < minVal</code> terpenuhi, kita mencatat nilai barunya sekaligus menyimpan nomor indeks <code>i</code> saat itu.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int minVal = arr[0];
+    int indeksMin = 0;
+
+    for (int i = 1; i &lt; n; i++) {
+        if (arr[i] &lt; minVal) {
+            minVal = arr[i];
+            indeksMin = i;
+        }
+    }
+
+    cout &lt;&lt; &quot;Nilai Terkecil: &quot; &lt;&lt; minVal &lt;&lt; endl;
+    cout &lt;&lt; &quot;Berada di indeks: &quot; &lt;&lt; indeksMin &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 7: Pencarian Angka Target (Linear Search Dasar)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Gunakan variabel <code>posisi = -1</code> sebagai penanda awal bahwa angka belum ditemukan (karena indeks array tidak mungkin bernilai <code>-1</code>).</li>
+<li>Telusuri array dari indeks <code>0</code> sampai <code>n - 1</code>. Jika <code>arr[i] == x</code>, catat <code>posisi = i</code> dan keluar dari loop menggunakan <code>break</code>.</li>
+<li>Di luar loop, periksa apakah <code>posisi</code> masih <code>-1</code> atau sudah berubah.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, x;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+    cin &gt;&gt; x;
+
+    int posisi = -1;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] == x) {
+            posisi = i;
+            break; // Hentikan pencarian karena sudah ketemu pertama kali
+        }
+    }
+
+    if (posisi != -1) {
+        cout &lt;&lt; &quot;Ditemukan pada indeks: &quot; &lt;&lt; posisi &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;TIDAK DITEMUKAN&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 8: Menghitung Frekuensi Kemunculan Angka</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Buat variabel penghitung <code>frekuensi = 0</code>.</li>
+<li>Telusuri seluruh elemen array dari awal hingga akhir tanpa <code>break</code> agar semua kemunculan angka <code>x</code> terhitung.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, x;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+    cin &gt;&gt; x;
+
+    int frekuensi = 0;
+    for (int i = 0; i &lt; n; i++) {
+        if (arr[i] == x) {
+            frekuensi++;
+        }
+    }
+
+    cout &lt;&lt; &quot;Angka &quot; &lt;&lt; x &lt;&lt; &quot; muncul sebanyak &quot; &lt;&lt; frekuensi &lt;&lt; &quot; kali&quot; &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 9: Menukar Isi Dua Variabel (Konsep Dasar Swap)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Jika kita langsung menulis <code>a = b;</code>, maka nilai asli <code>a</code> akan tertimpa dan hilang.</li>
+<li>Oleh sebab itu, amankan nilai <code>a</code> terlebih dahulu ke dalam variabel <code>temp</code>.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a, b;
+    cin &gt;&gt; a &gt;&gt; b;
+
+    cout &lt;&lt; &quot;Sebelum: A = &quot; &lt;&lt; a &lt;&lt; &quot;, B = &quot; &lt;&lt; b &lt;&lt; endl;
+
+    int temp = a;
+    a = b;
+    b = temp;
+
+    cout &lt;&lt; &quot;Sesudah: A = &quot; &lt;&lt; a &lt;&lt; &quot;, B = &quot; &lt;&lt; b &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 10: Menukar Elemen Pertama dan Terakhir Array</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Elemen pertama selalu berada di <code>arr[0]</code> dan elemen terakhir berada di <code>arr[n - 1]</code>.</li>
+<li>Gunakan teknik <code>temp</code> untuk menukar kedua elemen tersebut, lalu tampilkan isi array dengan loop.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // Menukar elemen indeks ke-0 dengan indeks ke-(n-1)
+    int temp = arr[0];
+    arr[0] = arr[n - 1];
+    arr[n - 1] = temp;
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 11: Satu Putaran Gelembung (1-Pass Bubble)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Loop berjalan dari <code>i = 0</code> hingga <code>i < n - 1</code> (berhenti satu langkah sebelum elemen terakhir agar <code>arr[i + 1]</code> tetap valid).</li>
+<li>Di setiap langkah, kita membandingkan dua elemen bersebelahan: <code>arr[i]</code> dan <code>arr[i + 1]</code>.</li>
+<li>Jika elemen kiri lebih besar dari elemen kanan, kita lakukan pertukaran (<em>swap</em>). Hasilnya, angka paling besar akan terdorong terus ke kanan hingga menempati posisi terakhir (<code>arr[n - 1]</code>).</li>
+<li><em>Catatan Pengajar untuk Pertemuan Berikutnya:</em> Ketika siswa sudah berhasil mengerjakan soal ini, tunjukkan bahwa <strong>Bubble Sort</strong> hanyalah membungkus loop ini di dalam satu loop <code>for</code> lagi sebanyak <code>n - 1</code> kali!</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    // 1-Pass Bubble: menggeser nilai terbesar ke posisi paling ujung kanan
+    for (int i = 0; i &lt; n - 1; i++) {
+        if (arr[i] &gt; arr[i + 1]) {
+            int temp = arr[i];
+            arr[i] = arr[i + 1];
+            arr[i + 1] = temp;
+        }
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>

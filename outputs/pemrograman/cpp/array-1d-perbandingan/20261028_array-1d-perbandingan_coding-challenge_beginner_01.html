@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array 1D Perbandingan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Prevent Flash of Unstyled Content (FOUC) by applying saved theme immediately
+        (function() {
+            const savedTheme = localStorage.getItem('soal_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --bg-table-head: #f8fafc;
+            --bg-table-even: #fcfcfd;
+            --text-main: #1e293b;
+            --text-heading: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --accent: #7c3aed;
+            --accent-light: #f5f3ff;
+            --border: #e2e8f0;
+            --border-highlight: #cbd5e1;
+            --code-bg: #0f172a;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #f1f5f9;
+            --inline-code-text: #0f172a;
+            --warning-bg: #fffbeb;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --decom-bg: #faf5ff;
+            --decom-border: #c084fc;
+            --decom-title: #6b21a8;
+            --callout-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b1120;
+            --bg-card: #1e293b;
+            --bg-subtle: #0f172a;
+            --bg-table-head: #0f172a;
+            --bg-table-even: #162032;
+            --text-main: #e2e8f0;
+            --text-heading: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.15);
+            --accent: #a78bfa;
+            --accent-light: rgba(167, 139, 250, 0.15);
+            --border: #334155;
+            --border-highlight: #475569;
+            --code-bg: #090d16;
+            --code-text: #f1f5f9;
+            --inline-code-bg: #0f172a;
+            --inline-code-text: #38bdf8;
+            --warning-bg: rgba(245, 158, 11, 0.12);
+            --warning-border: #f59e0b;
+            --warning-text: #fde68a;
+            --decom-bg: rgba(139, 92, 246, 0.1);
+            --decom-border: #8b5cf6;
+            --decom-title: #c4b5fd;
+            --callout-bg: #162032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 2rem 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* Header & Metadata */
+        .header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .badge-primary { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* Action Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+        .btn-outline:hover { background: var(--bg-subtle); border-color: var(--border-highlight); }
+
+        /* Callout Banners */
+        .callout {
+            background: var(--callout-bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Case Studies (Cards) */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            clear: both;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-header-accent {
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Math & Constraint Badges */
+        .math-badge {
+            display: inline-block;
+            font-family: 'Fira Code', Consolas, monospace;
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid var(--border-highlight);
+            letter-spacing: 0.03em;
+        }
+
+        .var-math {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-heading);
+            padding: 0 0.15rem;
+        }
+
+        /* Lembar Analisis (Worksheet Box) */
+        .decom-box {
+            background: var(--decom-bg);
+            border: 1.5px dashed var(--decom-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            clear: both;
+        }
+
+        .decom-box h4 {
+            color: var(--decom-title);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+
+        p code, li code, td code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.925rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-table-head);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-table-even);
+        }
+
+        /* Teacher's Solutions Section */
+        .teacher-section {
+            margin-top: 3rem;
+            border-top: 3px double var(--border-highlight);
+            padding-top: 2rem;
+        }
+
+        .teacher-group {
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .teacher-group-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Print Media Queries (Always Print Clean Light Mode) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+
+            .toolbar, .btn {
+                display: none !important;
+            }
+
+            .card, .header-card {
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem;
+            }
+
+            h1, h2, h3, h4, p, li, td, th {
+                color: #000000 !important;
+            }
+
+            .decom-box {
+                border-color: #666 !important;
+                background: #fafafa !important;
+            }
+
+            pre {
+                background: #f8f8f8 !important;
+                color: #000000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .math-badge, p code, li code {
+                border: 1px solid #999 !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+            }
+
+            .hide-on-print {
+                display: none !important;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Content -->
+        
+            <div class="header-card">
+                <div class="badges">
+                    <span class="badge badge-primary">SOAL-20261028-005</span>
+                    <span class="badge badge-purple">CPP</span>
+                    <span class="badge badge-gray">BEGINNER</span>
+                    <span class="badge badge-gray">5 SOAL</span>
+                </div>
+                <h1 class="header-title">Bank Soal Latihan Mandiri di Rumah — Paket 04</h1>
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <a href="../../../../index.html" class="btn btn-outline">
+                            🏠 Kembali ke Portal
+                        </a>
+                        <button id="btnThemeToggle" class="btn btn-outline" onclick="toggleTheme()">
+                            🌙 Dark Mode
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="btnToggleSolutions" class="btn btn-outline" onclick="toggleTeacherSection()">
+                            🔓 Tampilkan Kunci & Pembahasan (Mode Guru)
+                        </button>
+                        <button class="btn btn-outline" onclick="printDoc()">
+                            🖨️ Cetak / PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+<p><strong>Topik:</strong> Logika Array Menengah (Perbandingan Antar-Elemen Bersebelahan & Nilai Ekstremum)</p>
+<p><strong>Estimasi Waktu:</strong> 25–30 Menit</p>
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN A: Tebak Output & Tabel Tracing (Tanpa Komputer)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 1: Melacak Perbandingan Dua Elemen Bersebelahan (<code>arr[i]</code> dan <code>arr[i + 1]</code>)</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Kemampuan membandingkan elemen <code>arr[i]</code> dengan tetangga kanannya <code>arr[i + 1]</code> adalah dasar dari hampir semua algoritma pengurutan data. Perhatikan kode di bawah ini dan lengkapi tabel tracing-nya!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int skor[6] = {70, 85, 80, 90, 95, 88};
+    int naik = 0;
+
+    for (int i = 0; i &lt; 5; i++) {
+        if (skor[i + 1] &gt; skor[i]) {
+            naik++;
+        }
+    }
+
+    cout &lt;&lt; &quot;Jumlah kenaikan: &quot; &lt;&lt; naik &lt;&lt; endl;
+    return 0;
+}</code></pre>
+<p><strong>Tabel Tracing (Isilah titik-titik berikut):</strong></p>
+<table><thead><tr>
+<th>Nilai <code>i</code></th>
+<th>Nilai <code>skor[i]</code></th>
+<th>Nilai <code>skor[i + 1]</code></th>
+<th>Apakah <code>skor[i + 1] > skor[i]</code>?</th>
+<th>Nilai <code>naik</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>70</code></td>
+<td><code>85</code></td>
+<td>Ya (<code>85 > 70</code>)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>85</code></td>
+<td><code>80</code></td>
+<td>Tidak (<code>80 > 85</code> Salah)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>80</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody></table>
+<p><strong>Tebakan Output Akhir:</strong> <code>Jumlah kenaikan: ...</code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 2: Melacak Variabel Pembanding Berantai</h2></div>
+<p><strong>Instruksi:</strong></p>
+<p>Perhatikan bagaimana variabel <code>rekor</code> berubah di sepanjang loop berikut, dan hitung berapa kali teks <code>"REKOR BARU!"</code> tercetak ke layar!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int lompatan[6] = {150, 145, 160, 158, 175, 175};
+    int rekor = lompatan[0];
+
+    for (int i = 1; i &lt; 6; i++) {
+        if (lompatan[i] &gt; rekor) {
+            rekor = lompatan[i];
+            cout &lt;&lt; &quot;REKOR BARU: &quot; &lt;&lt; rekor &lt;&lt; endl;
+        }
+    }
+
+    return 0;
+}</code></pre>
+<p><strong>Pertanyaan:</strong></p>
+<ol>
+<li>Mengapa saat <code>i = 1</code> (<code>145</code>), tidak tercetak <code>"REKOR BARU"</code>?</li>
+<li>Mengapa saat <code>i = 5</code> (<code>175</code>), tidak tercetak <code>"REKOR BARU"</code>?</li>
+<li>Tuliskan output lengkap yang muncul di layar!</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN B: Detektif Bug (Analisis & Perbaikan Kode)</div></div>
+<div class="card"><div class="card-header"><h2>Soal 3: Jebakan Inisialisasi Nilai Terkecil (<code>min = 0</code>)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Seorang siswa membuat program untuk mencari <strong>angka terkecil (minimum)</strong> di dalam array. Saat diuji dengan array <code>{-10, -5, -20, -2}</code>, program berjalan lancar dan mencetak <code>-20</code>.</p>
+<p>Namun ketika diuji dengan array berisi angka positif <code>{45, 20, 80, 35}</code>, programnya malah selalu menjawab <strong><code>0</code></strong> (padahal angka <code>0</code> tidak ada di dalam array)!</p>
+<p>Berikut kode siswa tersebut:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int arr[4] = {45, 20, 80, 35};
+
+    // KODE YANG BERMASALAH (BUGGY):
+    int terkecil = 0; 
+    for (int i = 0; i &lt; 4; i++) {
+        if (arr[i] &lt; terkecil) {
+            terkecil = arr[i];
+        }
+    }
+
+    cout &lt;&lt; &quot;Nilai terkecil: &quot; &lt;&lt; terkecil &lt;&lt; endl;
+    return 0;
+}</code></pre>
+<p><strong>Tugasmu:</strong></p>
+<ol>
+<li>Jelaskan mengapa menginisialisasi <code>int terkecil = 0;</code> menyebabkan hasil akhir tetap <code>0</code> ketika semua isi array bernilai positif!</li>
+<li>Bagaimana cara menginisialisasi variabel <code>terkecil</code> yang benar agar selalu akurat untuk angka berapa pun? Tuliskan kode perbaikannya!</li>
+</ol>
+</div> <!-- /.card -->
+<div class="callout callout-warning"><div class="callout-title">📌 BAGIAN C: Tantangan Koding Kontekstual</div></div>
+<div class="card"><div class="card-header"><h2>Soal 4: Pemeriksa Apakah Array Sudah Terurut Naik (<em>Sorted Check</em>)</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Sebelum kita mengurutkan array atau menjalankan <em>Binary Search</em>, kita sering perlu memeriksa apakah sebuah array <strong>sudah terurut dari kecil ke besar (non-decreasing)</strong> atau belum.</p>
+<p>Sebuah array dikatakan terurut naik jika untuk setiap elemen berlaku <code>arr[i] <= arr[i + 1]</code>. Buatlah program untuk memeriksa apakah array berukuran <span class="var-math">N</span> sudah terurut naik! Jika sudah, cetak <code>"TERURUT"</code>, jika ada satu saja pasangan bersebelahan yang salah urutan (<code>arr[i] > arr[i + 1]</code>), cetak <code>"BELUM TERURUT"</code>.</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output berupa <code>"TERURUT"</code> atau <code>"BELUM TERURUT"</code>.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">2 &le; N &le; 100</span></li>
+<li><span class="math-badge">-1000 &le; arr[i] &le; 1000</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 20 25 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">TERURUT</code></pre>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+10 30 25 40 50</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">BELUM TERURUT</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+5 5 8 10</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">TERURUT</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Buat variabel penanda <code>bool urut = true;</code> (atau <code>int urut = 1;</code>). Jalankan loop dari <code>i = 0</code> sampai <code>i < n - 1</code>. Di dalam loop, cek apakah ada pelanggaran urutan: <code>if (arr[i] > arr[i + 1])</code>. Jika ditemukan, ubah <code>urut = false;</code> dan <code>break;</code>.</p></div>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header"><h2>Soal 5: Lonjakan Suhu Terbesar Antar-Hari Berurutan</h2></div>
+<p><strong>Deskripsi Masalah:</strong></p>
+<p>Diberikan data suhu udara selama <span class="var-math">N</span> hari berurutan. Hitunglah <strong>selisih perubahan suhu terbesar</strong> antara dua hari yang bersebelahan! (Selisih dihitung sebagai nilai mutlak/positif antara <code>arr[i]</code> dan <code>arr[i + 1]</code>).</p>
+<p><strong>Format Input & Output:</strong></p>
+<ul>
+<li>Baris pertama berisi bilangan bulat <span class="var-math">N</span>.</li>
+<li>Baris kedua berisi <span class="var-math">N</span> bilangan bulat.</li>
+<li>Output menampilkan selisih terbesar antara dua elemen yang bersebelahan.</li>
+</ul>
+<p><strong>Batasan (Constraints):</strong></p>
+<ul>
+<li><span class="math-badge">2 &le; N &le; 100</span></li>
+<li><span class="math-badge">0 &le; arr[i] &le; 100</span></li>
+</ul>
+<p><strong>Contoh Test Case:</strong></p>
+<ul>
+<li><strong>Test Case 1:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">5
+28 30 25 34 31</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lonjakan terbesar: 9</code></pre>
+<p><em>(Penjelasan: Selisih bersebelahan berturut-turut adalah <span class="math-badge">|28-30|=2</span>, <span class="math-badge">|30-25|=5</span>, <span class="math-badge">|25-34|=9</span>, <span class="math-badge">|34-31|=3</span>. Yang terbesar adalah 9).</em></p>
+<ul>
+<li><strong>Test Case 2:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">4
+20 20 20 20</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lonjakan terbesar: 0</code></pre>
+<ul>
+<li><strong>Test Case 3:</strong></li>
+<li>Input:</li>
+</ul>
+<pre><code class="language-text">3
+40 25 30</code></pre>
+<ul>
+<li>Output:</li>
+</ul>
+<pre><code class="language-text">Lonjakan terbesar: 15</code></pre>
+<div class="callout"><p><strong>Petunjuk Alur Berpikir (Clue):</strong></p></div>
+<div class="callout"><p>Untuk menghitung selisih positif antara <code>arr[i]</code> dan <code>arr[i + 1]</code> tanpa fungsi tambahan:</p></div>
+<div class="callout"><p>Jika <code>arr[i] > arr[i + 1]</code>, maka <code>selisih = arr[i] - arr[i + 1]</code>, selain itu <code>selisih = arr[i + 1] - arr[i]</code>.</p></div>
+<div class="callout"><p>Bandingkan <code>selisih</code> di setiap langkah dengan variabel <code>lonjakanMaks</code>.</p></div>
+</div> <!-- /.card -->
+<div id="kunci-jawaban" class="teacher-section hidden">
+
+                <div class="header-card" style="border-left: 6px solid var(--accent);">
+                    <h2 style="color:var(--accent);">📘 Kunci Jawaban & Pembahasan (Paket 04)</h2>
+                    <p style="color:var(--text-muted); margin-top:0.5rem;">
+                        Bagian ini dirancang khusus untuk pegangan pengajar/asisten, dilengkapi penjelasan langkah demi langkah dan kode solusi acuan C++.
+                    </p>
+                </div>
+                
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 1 (Tracing Perbandingan Bersebelahan)</h2></div>
+<table><thead><tr>
+<th>Nilai <code>i</code></th>
+<th>Nilai <code>skor[i]</code></th>
+<th>Nilai <code>skor[i + 1]</code></th>
+<th>Apakah <code>skor[i + 1] > skor[i]</code>?</th>
+<th>Nilai <code>naik</code></th>
+</tr></thead><tbody>
+<tr>
+<td><code>0</code></td>
+<td><code>70</code></td>
+<td><code>85</code></td>
+<td>Ya (<code>85 > 70</code>)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td><code>85</code></td>
+<td><code>80</code></td>
+<td>Tidak (<code>80 > 85</code> Salah)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>80</code></td>
+<td><code>90</code></td>
+<td>Ya (<code>90 > 80</code>)</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td><code>90</code></td>
+<td><code>95</code></td>
+<td>Ya (<code>95 > 90</code>)</td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td><code>95</code></td>
+<td><code>88</code></td>
+<td>Tidak (<code>88 > 95</code> Salah)</td>
+<td><code>3</code></td>
+</tr>
+</tbody></table>
+<p><strong>Output Akhir:</strong> <code>Jumlah kenaikan: 3</code></p>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 2 (Tracing Variabel Pembanding Berantai)</h2></div>
+<ol>
+<li>Saat <code>i = 1</code>, <code>lompatan[1]</code> adalah <code>145</code>, yang lebih kecil dari <code>rekor</code> awal (<code>150</code>), sehingga syarat <code>lompatan[i] > rekor</code> tidak terpenuhi.</li>
+<li>Saat <code>i = 5</code>, <code>lompatan[5]</code> adalah <code>175</code>, sedangkan <code>rekor</code> sudah bernilai <code>175</code> dari langkah <code>i = 4</code>. Karena syaratnya menggunakan tanda <code>></code> (lebih besar murni, bukan <code>>=</code>), maka <code>175 > 175</code> bernilai salah.</li>
+<li><strong>Output lengkap:</strong></li>
+</ol>
+<pre><code class="language-text">REKOR BARU: 160
+REKOR BARU: 175</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 3 (Detektif Bug)</h2></div>
+<ol>
+<li><strong>Penyebab Bug:</strong> Karena <code>terkecil</code> diisi awal dengan <code>0</code>, sedangkan seluruh isi array <code>{45, 20, 80, 35}</code> bernilai lebih besar dari <code>0</code>, maka kondisi <code>if (arr[i] < terkecil)</code> tidak pernah terpenuhi sekalipun.</li>
+<li><strong>Kode Perbaikan:</strong> Selalu inisialisasikan nilai minimum/maksimum dengan <strong>elemen pertama array (<code>arr[0]</code>)</strong>:</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int arr[4] = {45, 20, 80, 35};
+
+    int terkecil = arr[0]; // Gunakan elemen pertama sebagai patokan awal
+    for (int i = 1; i &lt; 4; i++) {
+        if (arr[i] &lt; terkecil) {
+            terkecil = arr[i];
+        }
+    }
+
+    cout &lt;&lt; &quot;Nilai terkecil: &quot; &lt;&lt; terkecil &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 4 (Pemeriksa Array Terurut Naik)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Anggap di awal bahwa array sudah terurut (<code>bool urut = true;</code>).</li>
+<li>Periksa setiap pasangan bersebelahan <code>arr[i]</code> dan <code>arr[i + 1]</code> untuk <code>i = 0</code> hingga <code>n - 2</code>.</li>
+<li>Jika ditemukan satu saja kondisi <code>arr[i] > arr[i + 1]</code>, berarti urutannya rusak: ubah <code>urut = false;</code> dan hentikan loop dengan <code>break</code>.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    bool urut = true;
+    for (int i = 0; i &lt; n - 1; i++) {
+        if (arr[i] &gt; arr[i + 1]) {
+            urut = false;
+            break;
+        }
+    }
+
+    if (urut) {
+        cout &lt;&lt; &quot;TERURUT&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;BELUM TERURUT&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+<div class="card"><div class="card-header-accent"><h2>Pembahasan Soal 5 (Lonjakan Suhu Terbesar)</h2></div>
+<p><strong>Penjelasan Langkah demi Langkah:</strong></p>
+<ol>
+<li>Buat variabel <code>lonjakanMaks = 0</code>.</li>
+<li>Telusuri setiap pasangan bersebelahan dari <code>i = 0</code> hingga <code>n - 2</code>.</li>
+<li>Hitung selisih positif antara <code>arr[i]</code> dan <code>arr[i + 1]</code>. Jika <code>selisih > lonjakanMaks</code>, perbarui <code>lonjakanMaks = selisih</code>.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    int arr[100];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    int lonjakanMaks = 0;
+    for (int i = 0; i &lt; n - 1; i++) {
+        int selisih;
+        if (arr[i] &gt; arr[i + 1]) {
+            selisih = arr[i] - arr[i + 1];
+        } else {
+            selisih = arr[i + 1] - arr[i];
+        }
+
+        if (selisih &gt; lonjakanMaks) {
+            lonjakanMaks = selisih;
+        }
+    }
+
+    cout &lt;&lt; &quot;Lonjakan terbesar: &quot; &lt;&lt; lonjakanMaks &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+</div> <!-- /.card -->
+</div> <!-- /#kunci-jawaban -->
+    </div>
+
+    <script>
+        function updateThemeBtnText() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const btn = document.getElementById('btnThemeToggle');
+            if (btn) {
+                btn.innerHTML = current === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('soal_theme', next);
+            updateThemeBtnText();
+        }
+
+        function toggleTeacherSection() {
+            const sec = document.getElementById('kunci-jawaban');
+            const btn = document.getElementById('btnToggleSolutions');
+            if (!sec) return;
+            if (sec.classList.contains('hidden')) {
+                sec.classList.remove('hidden');
+                btn.innerHTML = '👁️ Sembunyikan Kunci & Pembahasan (Mode Siswa)';
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-primary');
+            } else {
+                sec.classList.add('hidden');
+                btn.innerHTML = '🔓 Tampilkan Kunci & Pembahasan (Mode Guru)';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline');
+            }
+        }
+
+        function printDoc() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateThemeBtnText);
+    </script>
+</body>
+</html>
